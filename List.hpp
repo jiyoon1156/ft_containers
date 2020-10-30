@@ -1,18 +1,10 @@
 #ifndef LIST_HPP
 #define LIST_HPP
 
+#include "Iterator.hpp"
 #include "Node.hpp"
 
-namespace ft{
-	/*								 *						  				 */
-	/* iterator template parameters : category */
-	/*								 *											 */
-	struct input_iterator_tag {};
-	struct output_iterator_tag {};
-	struct forward_iterator_tag : input_iterator_tag {};
-	struct bidirectional_iterator_tag : forward_iterator_tag {};
-	struct random_access_iterator_tag : bidirectional_iterator_tag {};
-
+namespace ft	{
 	template <typename T, class Category = bidirectional_iterator_tag>
 	class ListIterator
 	{
@@ -86,6 +78,25 @@ namespace ft{
 				return (_ptr);
 			}
 			*/
+	};
+
+	template < class T, class Alloc = std::allocator<T> >
+	class List
+	{
+		private:
+
+		public:
+			typedef T											value_type;
+			typedef Alloc									allocator_type;
+			typedef Alloc									reference;
+			typedef Alloc									const_reference;
+			typedef Alloc									pointer;
+			typedef Alloc 								const_pointer;
+			typedef ListIterator<T>				iterator;
+			typedef ListIterator<const T>	const_iterator;
+			//reverse iterator T, const T
+			typedef std::ptrdiff_t 				difference_type;
+			typedef size_t 								size_type;
 	};
 }
 
