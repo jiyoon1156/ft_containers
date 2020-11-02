@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cstddef> //ptrdiff_t
 #include <memory>
+#include <limits> //max size
+#include <string>
 
 namespace ft
 {
