@@ -304,7 +304,20 @@ namespace ft	{
     	void insert (iterator position, size_type n, const value_type& val)
 			{
 				//n개만큼 노드 삽입하는데 그것의 값들은 val
+				int i = 0;
+				// Node<T> *loc = position.getPtr()->prev;
+				while (i < n)
+				{
+					Node<T> *new_node = new Node<T>();
+					new_node->prev = position.getPtr()->prev;
+					new_node->next = position.getPtr()->prev->next;
+					new_node->data = val;
+					position.getPtr()->prev->next = new_node;
+					new_node->next->prev = new_node;
 
+					++_size;
+					i++;
+				}
 			};
 			// template <class InputIterator>
     	// void insert (iterator position, InputIterator first, InputIterator last);
