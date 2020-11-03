@@ -88,14 +88,14 @@ namespace ft	{
 		public:
 			typedef T													value_type;
 			typedef Alloc											allocator_type;
-			typedef Alloc											reference;
-			typedef Alloc											const_reference;
-			typedef Alloc											pointer;
-			typedef Alloc 										const_pointer;
+			typedef typename Alloc::reference		reference;
+			typedef typename Alloc::const_reference	const_reference;
+			typedef typename Alloc::pointer			pointer;
+			typedef typename Alloc::const_pointer	const_pointer;
 			typedef ListIterator<T>						iterator;
 			typedef ListIterator<const T>			const_iterator;
-			typedef ReverseIterator<T>				reverse_iterator;
-			typedef ReverseIterator<const T>	const_reverse_iterator;
+			typedef ReverseIterator<iterator>				reverse_iterator;
+			typedef ReverseIterator<const_iterator>	const_reverse_iterator;
 			typedef std::ptrdiff_t 						difference_type;
 			typedef size_t 										size_type;
 
@@ -119,6 +119,7 @@ namespace ft	{
 				_tail->prev = nullptr;
 				_tail->data = 0;
 				//n 개의 컨테이너를 val 값으로 채운다.
+				_head = _tail;
 				insert(_head, n, val);
 			};
 			template <class InputIterator>
@@ -128,6 +129,7 @@ namespace ft	{
 				_tail->next = nullptr;
 				_tail->prev = nullptr;
 				_tail->data = 0;
+				_head = _tail;
 				//input iterator라 처음과 끝사이에 있는 값들이 채워짐
 				insert(_head, first, last);
 			};
@@ -237,9 +239,6 @@ namespace ft	{
 				insert(begin(), n, val);
 			};
 
-			// template <class... Args>
-  		// void emplace_front (Args&&... args);
-
 			void push_front (const value_type& val)
 			{
 				Node<T> *new_node = new Node<T>();
@@ -250,6 +249,7 @@ namespace ft	{
 				_head = new_node;
 				++_size;
 			};
+
 			void pop_front()
 			{
 				if (_head == _tail)
@@ -261,9 +261,6 @@ namespace ft	{
 				delete tmp;
 				--_size;
 			};
-
-			// template <class... Args>
-  		// void emplace_back (Args&&... args);
 
 			void push_back (const value_type& val)
 			{
@@ -278,6 +275,7 @@ namespace ft	{
 				_tail->prev = new_node;
 				++_size;
 			};
+
 			void pop_back()
 			{
 				if (_head == _tail)
@@ -293,19 +291,26 @@ namespace ft	{
 				--_size;
 			};
 
-			// template <class... Args>
-  		// iterator emplace (const_iterator position, Args&&... args);
-
 			iterator insert (iterator position, const value_type& val)
 			{
 				insert(position, (std::size_t)1, val);
 				return (position.getPtr()->prev);
 			};
+
     	void insert (iterator position, size_type n, const value_type& val)
 			{
 				//n개만큼 노드 삽입하는데 그것의 값들은 val
-				int i = 0;
-				// Node<T> *loc = position.getPtr()->prev;
+				size_type i = 0;
+				if (position == begin() || position.getPtr() == nullptr)
+				{
+					push_front(val);
+					++i;
+				}
+				if (_size == 0)
+				{
+					push_back(val);
+					++i;
+				}
 				while (i < n)
 				{
 					Node<T> *new_node = new Node<T>();
@@ -313,17 +318,48 @@ namespace ft	{
 					new_node->next = position.getPtr()->prev->next;
 					new_node->data = val;
 					position.getPtr()->prev->next = new_node;
-					new_node->next->prev = new_node;
-
+					position.getPtr()->prev = new_node;
 					++_size;
-					i++;
+					++i;
 				}
 			};
-			// template <class InputIterator>
-    	// void insert (iterator position, InputIterator first, InputIterator last);
+
+			template <class InputIterator>
+    	void insert (iterator position, InputIterator first, InputIterator last)
+			{
+				InputIterator it;
+				it = first;
+				if (position == begin())
+				{
+					push_front(*it);
+					++it;
+				}
+				if (_size == 0)
+				{
+					push_back(*it);
+					++it;
+				}
+				while (it != last)
+				{
+					Node<T> *new_node = new Node<T>();
+					new_node->prev = position.getPtr()->prev;
+					new_node->next = position.getPtr()->prev->next;
+					new_node->data = *it;
+					position.getPtr()->prev->next = new_node;
+					position.getPtr()->prev = new_node;
+					++_size;
+					++it;
+				}
+			};
+
 			// iterator erase (iterator position);
 			// iterator erase (iterator first, iterator last);
-			// void swap (List& x);
+			void swap (List& x)
+			{
+				std::swap(_head, x._head);
+				std::swap(_tail, x._tail);
+				std::swap(_size, x._size);
+			};
 			// void resize (size_type n, value_type val = value_type());
 			// void clear();
 			// /* operations */

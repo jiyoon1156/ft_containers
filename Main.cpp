@@ -17,18 +17,27 @@ using namespace ft;
 int main()
 {
 	ft::List<int> my_list1;
+	ft::List<int> my_list2;
 	ft::List<int>::iterator it;
 
 	std::cout << "======== insert ===========" << std::endl;
 	for (int i = 1; i <= 5; ++i)
 		my_list1.push_back(i);
 
+	for (int i = 6; i <= 10; ++i)
+		my_list2.push_back(i);
+
 	it = my_list1.begin();
 	++it;
-	my_list1.insert(it, 10);
+
+	my_list1.insert(it, my_list2.begin(), my_list2.end());
+	// my_list1.insert(it, 10);
+	// my_list1.insert(it, 20);
+	// my_list1.insert(it, 30);
 	for (it=my_list1.begin(); it!=my_list1.end(); ++it)
     std::cout << ' ' << *it;
   std::cout << '\n';
+
 	// std::cout << "======== size & empty ===========" << std::endl;
 
 	// std::cout << "size : " << my_list1.size() << std::endl;
@@ -130,25 +139,25 @@ int main()
 	// std::cout << "Size of first: " << first.size() << std::endl;
 	// std::cout << "Size of second: " << second.size() << std::endl;
 
-	// std::cout << "========= swap ==========" << std::endl;
+	std::cout << "========= swap ==========" << std::endl;
 
-	// ft::List<int> a ((unsigned int)3,100);   // three ints with a value of 100
-	// ft::List<int> b ((unsigned int)5,200);  // five ints with a value of 200
+	ft::List<int> a ((unsigned int)3,100);   // three ints with a value of 100
+	ft::List<int> b ((unsigned int)5,200);  // five ints with a value of 200
 
 
-	// a.swap(b);
+	a.swap(b);
 
-	// std::cout << "first contains:";
+	std::cout << "first contains:";
 
-	// for (ft::List<int>::iterator it=a.begin(); it!=a.end(); it++)
-	// 	std::cout << ' ' << *it;
-	// std::cout << '\n';
+	for (ft::List<int>::iterator it=a.begin(); it!=a.end(); it++)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
 
-	// std::cout << "by reverse iterator:";
+	std::cout << "by reverse iterator:";
 
-	// for (ft::List<int>::reverse_iterator it=a.rbegin(); it!=a.rend(); it++)
-	// 	std::cout << ' ' << *it;
-	// std::cout << '\n';
+	for (ft::List<int>::reverse_iterator it=a.rbegin(); it!=a.rend(); it++)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
 
 	// std::cout << "second contains:";
 	// for (ft::List<int>::iterator it=b.begin(); it!=b.end(); it++)

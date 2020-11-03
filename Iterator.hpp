@@ -77,8 +77,8 @@ namespace ft	{
 		};
 		reference					operator*() const
 		{
-			iterator_type Rev_it(_base_it);
-			return (*--Rev_it); //coz it points the last + 1
+			iterator_type tmp(_base_it);
+			return (*--tmp); //coz it points the last + 1
 		};
 		/*
 		Returns a reverse iterator pointing to the element located n positions away
