@@ -197,13 +197,13 @@ int main()
 	ft::List<int> my_list5;
 	for (int i = 1; i < 10; ++i)
 		my_list5.push_back(i);
-	std::cout << my_list5.size() << std::endl;
+
 	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
     	std::cout << ' ' << *it;
 	std::cout << '\n';
 
 	my_list5.resize(5);
-	std::cout << my_list5.size() << std::endl;
+
 	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
     	std::cout << ' ' << *it;
 	std::cout << '\n';
@@ -220,6 +220,12 @@ int main()
     	std::cout << ' ' << *it;
 	std::cout << '\n';
 
+	std::cout << "========= clear ==========" << std::endl;
+	my_list5.clear();
+	my_list5.push_back(100);
+	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+    	std::cout << ' ' << *it;
+	std::cout << '\n';
 	// std::cout << "========= splice ==========" << std::endl;
 
 	// ft::List<int> mylist1, mylist2;

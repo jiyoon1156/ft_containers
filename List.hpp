@@ -283,14 +283,12 @@ namespace ft	{
 				//리스트 탐색해서 마지막 전 노드 찾는다
 				//그 노드 다음을 널 가리키게 함
 				//마지막 노드 제거
-
-				Node<T> *tmp;
-				tmp = _tail->prev;
-				_tail->prev = tmp->prev;
-				if (tmp != _head)
-					tmp->prev->next = _tail;
+				Node<T> *tmp = _tail->prev;
+				if (tmp == _head)
+					_head = _tail;
 				else
-					_head=_tail;
+					tmp->prev->next = _tail;
+				_tail->prev = tmp->prev;
 				delete tmp;
 				--_size;
 			};
@@ -376,24 +374,20 @@ namespace ft	{
 
 			iterator erase (iterator first, iterator last)
 			{
-				if (first == begin())
-				{
-					pop_front();
-					return (begin());
-				}
-				if (last == end())
-					return (end());
 				iterator it = first;
 				while (it != last)
 				{
 					Node<T> *tmp = it.getPtr();
-					tmp->prev->next = tmp->next;
+					if (tmp == _head)
+						_head = tmp->next;
+					else
+						tmp->prev->next = tmp->next;
 					tmp->next->prev = tmp->prev;
 					delete tmp;
 					--_size;
 					++it;
 				}
-				return (first);
+				return (it);
 			};
 
 			void swap (List& x)
@@ -406,14 +400,15 @@ namespace ft	{
 			void resize (size_type n, value_type val = value_type())
 			{
 				while(n < _size)
-				{
-					std::cout << "@" << std::endl;
 					pop_back();
-				}
 				while(_size < n)
 					push_back(val);
 			};
-			// void clear();
+
+			void clear()
+			{
+				erase(begin(), end());
+			};
 			// /* operations */
 			// void splice (iterator position, List& x);
 			// void splice (iterator position, List& x, iterator i);
