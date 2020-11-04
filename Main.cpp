@@ -38,6 +38,27 @@ int main()
     std::cout << ' ' << *it;
   std::cout << '\n';
 
+	std::cout << "======== erase ===========" << std::endl;
+
+	// it = my_list1.begin();
+	// ++it;
+	// my_list1.erase(it);
+	// ++it;
+	// my_list1.erase(it);
+	// --it;
+	// my_list1.erase(it);
+
+	ft::List<int>::iterator it2;
+	it2 = it = my_list1.begin();
+	++it;
+	++it2;
+	++it2;
+	++it2;
+	my_list1.erase(it, it2);
+	for (it=my_list1.begin(); it!=my_list1.end(); ++it)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
+
 	// std::cout << "======== size & empty ===========" << std::endl;
 
 	// std::cout << "size : " << my_list1.size() << std::endl;
@@ -119,13 +140,13 @@ int main()
 	// 	my_list1.pop_front();
 	// }
 
-	// std::cout << "========pop_back===========" << std::endl;
+	std::cout << "========pop_back===========" << std::endl;
 
-	// while (!my_list2.empty())
-	// {
-	// 	std::cout << my_list2.back() << std::endl;
-	// 	my_list2.pop_back();
-	// }
+	while (!my_list2.empty())
+	{
+		std::cout << my_list2.back() << std::endl;
+		my_list2.pop_back();
+	}
 
 	// std::cout << "========= assign ==========" << std::endl;
 
@@ -171,33 +192,33 @@ int main()
 	// std::cout << '\n';
 
 
-	// std::cout << "========= resize ==========" << std::endl;
+	std::cout << "========= resize ==========" << std::endl;
 
-	// ft::List<int> my_list5;
-	// for (int i = 1; i < 10; ++i)
-	// 	my_list5.push_back(i);
+	ft::List<int> my_list5;
+	for (int i = 1; i < 10; ++i)
+		my_list5.push_back(i);
+	std::cout << my_list5.size() << std::endl;
+	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+    	std::cout << ' ' << *it;
+	std::cout << '\n';
 
-	// i = 0;
-	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-  //   	std::cout << ' ' << *it;
-	// std::cout << '\n';
+	my_list5.resize(5);
+	std::cout << my_list5.size() << std::endl;
+	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+    	std::cout << ' ' << *it;
+	std::cout << '\n';
 
-	// my_list5.resize(5);
-	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-  //   	std::cout << ' ' << *it;
-	// std::cout << '\n';
+	my_list5.resize(8,100);
 
-	// my_list5.resize(8,100);
-
-	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-  //   	std::cout << ' ' << *it;
-	// std::cout << '\n';
+	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+    	std::cout << ' ' << *it;
+	std::cout << '\n';
 
 
-	// my_list5.resize(12);
-	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-  //   	std::cout << ' ' << *it;
-	// std::cout << '\n';
+	my_list5.resize(12);
+	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+    	std::cout << ' ' << *it;
+	std::cout << '\n';
 
 	// std::cout << "========= splice ==========" << std::endl;
 
