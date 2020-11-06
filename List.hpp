@@ -140,8 +140,8 @@ namespace ft	{
 			};
 			List& operator=(const List& other)
 			{
-				// if (_size != 0)
-				// 	clear();
+				if (_size != 0)
+					clear();
 				if (!_tail)
 				{
 					_tail = new Node<T>();
@@ -230,12 +230,12 @@ namespace ft	{
 			template <class InputIterator>
   		void assign (InputIterator first, InputIterator last)
 			{
-				// clear();
+				clear();
 				insert(begin(), first, last);
 			};
 			void assign (size_type n, const value_type& val)
 			{
-				// clear();
+				clear();
 				insert(begin(), n, val);
 			};
 
@@ -409,64 +409,199 @@ namespace ft	{
 			{
 				erase(begin(), end());
 			};
-			// /* operations */
-			// void splice (iterator position, List& x);
-			// void splice (iterator position, List& x, iterator i);
-			// void splice (iterator position, List& x, iterator first, iterator last);
-			// void remove (const value_type& val);
-			// template <class Predicate>
-  		// void remove_if (Predicate pred);
-			// void unique();
-			// template <class BinaryPredicate>
-			// void unique (BinaryPredicate binary_pred);
-			// void merge (List& x);
-			// template <class Compare>
-  		// void merge (List& x, Compare comp);
-			// void sort();
-			// template <class Compare>
-			// void sort (Compare comp);
-			// void reverse();
-			// /* observers */
-			// allocator_type get_allocator() const;
+
+			/* operations */
+			void splice (iterator position, List& x)
+			{
+				insert(position, x.begin(), x.end());
+				x.clear();
+			};
+
+			void splice (iterator position, List& x, iterator i)
+			{
+				insert(position, *i);
+				x.erase(i);
+			};
+
+			void splice (iterator position, List& x, iterator first, iterator last)
+			{
+				insert(position, first, last);
+				x.erase(first, last);
+			};
+
+			void remove (const value_type& val)
+			{
+				iterator it = begin();
+				while (it != end())
+				{
+					if (*it == val)
+						it = erase(it);
+					else
+						++it;
+				}
+			};
+
+			template <class Predicate>
+  		void remove_if (Predicate pred)
+			{
+				iterator it = begin();
+				while (it != end())
+				{
+					if (pred(*it))
+						it = erase(it);
+					else
+						++it;
+				}
+			};
+
+			void unique()
+			{
+				for(iterator first = begin(); first != end(); ++first)
+				{
+					iterator next = first;
+					next++;
+					for (;next != end(); ++next)
+					{
+						if (*first == *next)
+							erase(next);
+					}
+				}
+			};
+
+			template <class BinaryPredicate>
+			void unique (BinaryPredicate binary_pred)
+			{
+				for(iterator first = begin(); first != end(); ++first)
+				{
+					iterator next = first;
+					next++;
+					for (;next != end(); ++next)
+					{
+						if (binary_pred(*first, *next))
+							erase(next);
+					}
+				}
+			};
+
+			void merge (List& x)
+			{
+				if (&x == this)
+					return ;
+				for (iterator it = x.begin(); it != x.end(); it++)
+					push_back(*it);
+				sort();
+				x.clear();
+			};
+
+			template <class Compare>
+  		void merge (List& x, Compare comp)
+			{
+				if (&x == this)
+					return ;
+				for (iterator it = x.begin(); it != x.end(); it++)
+					push_back(*it);
+				sort(comp);
+				x.clear();
+			};
+
+			void sort()
+			{
+				for(iterator first = begin(); first != end(); ++first)
+				{
+					iterator next = first;
+					next++;
+					for (;next != end(); ++next)
+					{
+						if (*first > *next)
+							std::swap(*first, *next);
+					}
+				}
+			};
+
+			template <class Compare>
+			void sort (Compare comp)
+			{
+				for(iterator first = begin(); first != end(); ++first)
+				{
+					iterator next = first;
+					next++;
+					for (;next != end(); ++next)
+					{
+						if (!comp(*first, *next))
+							std::swap(*first, *next);
+					}
+				}
+			};
+
+			void reverse()
+			{
+				iterator first = begin();
+				iterator last = end();
+				for (size_type i = 0; i < (_size / 2); ++i)
+				{
+					std::swap(first, last);
+					++first;
+					--last;
+				}
+			};
 	};
 
 	/**/
 	/* Non-member function overloads */
 	/**/
-	// template <class T, class Alloc>
-	// bool operator== (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
-	// {
-
-	// };
+	template <class T, class Alloc>
+	bool operator== (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
+	{
+		//사이즈로 먼저 비교하고 val 비교
+		if (lhs.size() != rhs.size())
+			return (false);
+		typename List<T, Alloc>::const_iterator	it_r = rhs.begin();
+		typename List<T, Alloc>::const_iterator	it_l = lhs.begin();
+		for (; (it_l != lhs.end()) && (it_r != rhs.end()); ++it_l, ++it_r)
+		{
+			if (*it_l != *it_r)
+				return (false);
+		}
+		return (true);
+	};
 
 	template <class T, class Alloc>
 	bool operator!= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
-		return (lhs != rhs);
+		return (!(lhs == rhs));
 	};
 
-	// template <class T, class Alloc>
-	// bool operator<  (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
-	// {
-
-	// };
+	template <class T, class Alloc>
+	bool operator<  (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
+	{
+		typename List<T, Alloc>::const_iterator	it_r = rhs.begin();
+		typename List<T, Alloc>::const_iterator	it_l = lhs.begin();
+		for (; (it_l != lhs.end()) && (it_r != rhs.end()); ++it_l, ++it_r)
+		{
+			if (*it_l < *it_r)
+				return (true);
+			if (*it_r < *it_l)
+				return (false);
+		}
+		return (it_l == lhs.end() && it_r != rhs.end());
+	};
 
 	template <class T, class Alloc>
 	bool operator<= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
-		return (lhs <= rhs);
+		return (!(lhs > rhs));
 	};
 
 	template <class T, class Alloc>
 	bool operator>  (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
-		return (lhs > rhs);
+		return (rhs < lhs);
 	};
 
 	template <class T, class Alloc>
 	bool operator>= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
-		return (lhs >= rhs);
+		return (!(lhs < rhs));
 	};
 
 	template <class T, class Alloc>
