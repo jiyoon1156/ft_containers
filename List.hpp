@@ -4,7 +4,8 @@
 #include "Iterator.hpp"
 #include "Node.hpp"
 
-namespace ft	{
+namespace ft
+{
 	template <typename T, class Category = bidirectional_iterator_tag>
 	class ListIterator
 	{
@@ -86,18 +87,18 @@ namespace ft	{
 			Node<T>	*_tail;
 			size_t	_size;
 		public:
-			typedef T													value_type;
-			typedef Alloc											allocator_type;
-			typedef typename Alloc::reference		reference;
+			typedef T																value_type;
+			typedef Alloc														allocator_type;
+			typedef typename Alloc::reference				reference;
 			typedef typename Alloc::const_reference	const_reference;
-			typedef typename Alloc::pointer			pointer;
-			typedef typename Alloc::const_pointer	const_pointer;
-			typedef ListIterator<T>						iterator;
-			typedef ListIterator<const T>			const_iterator;
+			typedef typename Alloc::pointer					pointer;
+			typedef typename Alloc::const_pointer		const_pointer;
+			typedef ListIterator<T>									iterator;
+			typedef ListIterator<const T>						const_iterator;
 			typedef ReverseIterator<iterator>				reverse_iterator;
 			typedef ReverseIterator<const_iterator>	const_reverse_iterator;
-			typedef std::ptrdiff_t 						difference_type;
-			typedef size_t 										size_type;
+			typedef std::ptrdiff_t 									difference_type;
+			typedef size_t 													size_type;
 
 			// explicit List(const allocator_type& alloc = allocator_type());
 			// explicit List(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
@@ -608,7 +609,7 @@ namespace ft	{
 	void swap (List<T,Alloc>& x, List<T,Alloc>& y)
 	{
 		x.swap(y);
-	}
+	};
 }
 
 #endif
