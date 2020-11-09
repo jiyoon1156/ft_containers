@@ -145,18 +145,18 @@ namespace ft
 			그리고 이 함수는 복사가 완료된 위치의 다음 요소를 가리키는 포인터를 반환합니다.
 			즉 1~5 위치에 복사를 완료했다면 6위치를 가리키는 포인터를 반환합니다.
 			*/
-			explicit Vector (const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(0), _capa(0)
+			explicit Vector (const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(0), _capa(1)
 			{
 				_ptr = _alloc.allocate(1);
 			};
-			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(n), _capa(n)
+			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(n), _capa(n + 1)
 			{
 				_ptr = _alloc.allocate(n + 1);
 				for (int i = 0; i < n; ++i)
 					_alloc.construct(&_ptr[i], val);
 			};
 			template <class InputIterator>
-			Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(0), _capa(0)
+			Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(0), _capa(1)
 			{
 				_ptr = _alloc.allocate(1);
 				assign(first, last);
@@ -248,8 +248,8 @@ namespace ft
 					_ptr = newPtr;
 					_capa = n;
 				}
-				else
-					throw std::bad_alloc("bad alloc");
+				// else
+				// 	throw std::bad_alloc("bad alloc");
 			};
 
 			/* element access */
@@ -291,12 +291,39 @@ namespace ft
 			};
 			/* modifiers */
 			template <class InputIterator>
-  		void assign (InputIterator first, InputIterator last);
-			void assign (size_type n, const value_type& val);
-			void push_back (const value_type& val);
-			void pop_back();
-			iterator insert (iterator position, const value_type& val);
-    	void insert (iterator position, size_type n, const value_type& val);
+  		void assign (InputIterator first, InputIterator last)
+			{
+				if (_size)
+					clear();
+				insert(begin(), first, last);
+			};
+			void assign (size_type n, const value_type& val)
+			{
+				if (_size)
+					clear();
+				insert(begin(), n, val);
+			};
+			void push_back (const value_type& val)
+			{
+				if (_capa < _size)
+					reserve(_size);
+				_alloc.construct(&_ptr[_size], val);
+				++_size;
+			};
+			void pop_back()
+			{
+				--_size;
+				_alloc.destroy(_ptr + _size - 1);
+			};
+			iterator insert (iterator position, const value_type& val)
+			{
+				insert(position, (std::size_t)1, val);
+				return (position.getPtr()->prev);
+			};
+    	void insert (iterator position, size_type n, const value_type& val)
+			{
+
+			};
 			template <class InputIterator>
     	void insert (iterator position, InputIterator first, InputIterator last);
 			iterator erase (iterator position);
