@@ -253,15 +253,42 @@ namespace ft
 			};
 
 			/* element access */
-			reference operator[] (size_type n);
-			const_reference operator[] (size_type n) const;
-			reference at (size_type n);
-			const_reference at (size_type n) const;
-			reference front();
-			const_reference front() const;
-			reference back();
+			reference operator[] (size_type n)
+			{
+				return (_ptr[n]);
+			};
+			const_reference operator[] (size_type n) const
+			{
+				return (_ptr[n]);
+			};
+			reference at (size_type n)
+			{
+				if (n >= _size)
+					throw std::out_of_range("out of range");
+				return (_ptr[n]);
+			};
+			const_reference at (size_type n) const
+			{
+				if (n >= _size)
+					throw std::out_of_range("out of range");
+				return (_ptr[n]);
+			};
+			reference front()
+			{
+				return (*_ptr);
+			};
+			const_reference front() const
+			{
+				return (*_ptr);
+			};
+			reference back()
+			{
+				return (*(_ptr + _size - 1));
+			};
 			const_reference back() const;
-
+			{
+				return (*(_ptr + _size - 1));
+			};
 			/* modifiers */
 			template <class InputIterator>
   		void assign (InputIterator first, InputIterator last);
