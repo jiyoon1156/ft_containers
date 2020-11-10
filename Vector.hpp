@@ -355,7 +355,7 @@ namespace ft
     	void insert (iterator position, InputIterator first, InputIterator last)
 			{
 				size_type n = distance(first, last);
-				size_t m = distance(position, end()) + n - 1;
+				size_type m = distance(position, end()) + n - 1;
 				for (size_type i = 0; i < n; i++)
 					push_back(_ptr[_size - (i + 1)]);
 				iterator it = end() - 1;
@@ -371,13 +371,34 @@ namespace ft
 					it++;
 				}
 			};
-			// iterator erase (iterator position);
-			// iterator erase (iterator first, iterator last);
-			// void swap (Vector& x);
-			// void clear();
-
-			// /* allocator */
-			// allocator_type get_allocator() const;
+			iterator erase (iterator position)
+			{
+				for (iterator it = position; it != (end() - 1); ++it)
+					*it = *(it + 1);
+				_size -= 1;
+				return (position);
+			};
+			iterator erase (iterator first, iterator last)
+			{
+				size_type n = distance(first, last);
+				for (iterator it = last; it != end(); ++it)
+				{
+					*first = *it;
+					first++;
+				}
+				_size -= n;
+				return (last);
+			};
+			void swap (Vector& x)
+			{
+				Vector tmp(x);
+				x = *this;
+				*this = tmp;
+			};
+			void clear()
+			{
+				_size = 0;
+			};
 	};
 
 	/* non-member function overloads */
@@ -441,10 +462,6 @@ namespace ft
 	{
 		x.swap(y);
 	};
-
-	// /* class template specialization */
-	// template < class T, class Alloc = allocator<T> > class vector; // generic template
-	// template <class Alloc> class vector<bool,Alloc>;               // bool specialization
 }
 
 #endif
