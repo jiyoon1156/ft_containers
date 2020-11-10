@@ -112,7 +112,7 @@ namespace ft
 			}
 	};
 
-	template <class T, class Alloc = std::allocator<T>>
+	template <class T, class Alloc = std::allocator<T> >
 	class Vector
 	{
 		private:
@@ -145,35 +145,38 @@ namespace ft
 			그리고 이 함수는 복사가 완료된 위치의 다음 요소를 가리키는 포인터를 반환합니다.
 			즉 1~5 위치에 복사를 완료했다면 6위치를 가리키는 포인터를 반환합니다.
 			*/
-			explicit Vector (const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(0), _capa(1)
+			explicit Vector (const allocator_type& alloc = allocator_type()): _ptr(nullptr), _capa(1), _size(0)
 			{
+				_alloc = alloc;
 				_ptr = _alloc.allocate(1);
 			};
-			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(n), _capa(n + 1)
+			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _ptr(nullptr), _capa(n + 1), _size(n)
 			{
+				_alloc = alloc;
 				_ptr = _alloc.allocate(n + 1);
-				for (int i = 0; i < n; ++i)
+				for (size_type i = 0; i < n; ++i)
 					_alloc.construct(&_ptr[i], val);
 			};
 			template <class InputIterator>
-			Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _ptr(nullptr), _size(0), _capa(1)
+			Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _ptr(nullptr),  _capa(1), _size(0)
 			{
+				_alloc = alloc;
 				_ptr = _alloc.allocate(1);
 				assign(first, last);
 			};
-			Vector (const Vector& x): _ptr(nullptr), _size(0), _capa(0)
+			Vector (const Vector& x): _ptr(nullptr), _capa(1), _size(0)
 			{
 				*this = x;
 			};
 			~Vector()
 			{
-				for (int i = 0; i < _size; ++i)
+				for (size_type i = 0; i < _size; ++i)
 					_alloc.destroy((_ptr + i));
 				_alloc.deallocate(_ptr, _capa + 1);
 			};
 			Vector& operator= (const Vector& x)
 			{
-				assing(x.begin(), x.end());
+				assign(x.begin(), x.end());
 				return (*this);
 			};
 
@@ -285,7 +288,7 @@ namespace ft
 			{
 				return (*(_ptr + _size - 1));
 			};
-			const_reference back() const;
+			const_reference back() const
 			{
 				return (*(_ptr + _size - 1));
 			};
@@ -293,14 +296,14 @@ namespace ft
 			template <class InputIterator>
   		void assign (InputIterator first, InputIterator last)
 			{
-				if (_size)
-					clear();
+				// if (_size)
+				// 	clear();
 				insert(begin(), first, last);
 			};
 			void assign (size_type n, const value_type& val)
 			{
-				if (_size)
-					clear();
+				// if (_size)
+				// 	clear();
 				insert(begin(), n, val);
 			};
 			void push_back (const value_type& val)
@@ -318,21 +321,24 @@ namespace ft
 			iterator insert (iterator position, const value_type& val)
 			{
 				insert(position, (std::size_t)1, val);
-				return (position.getPtr()->prev);
+				return (position);
 			};
     	void insert (iterator position, size_type n, const value_type& val)
 			{
 
 			};
 			template <class InputIterator>
-    	void insert (iterator position, InputIterator first, InputIterator last);
-			iterator erase (iterator position);
-			iterator erase (iterator first, iterator last);
-			void swap (vector& x);
-			void clear();
+    	void insert (iterator position, InputIterator first, InputIterator last)
+			{
 
-			/* allocator */
-			allocator_type get_allocator() const;
+			};
+			// iterator erase (iterator position);
+			// iterator erase (iterator first, iterator last);
+			// void swap (Vector& x);
+			// void clear();
+
+			// /* allocator */
+			// allocator_type get_allocator() const;
 	};
 
 	/* non-member function overloads */
