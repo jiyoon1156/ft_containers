@@ -1,6 +1,6 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
-
+#include <iterator>
 #include "Iterator.hpp"
 #include "Node.hpp"
 
@@ -323,14 +323,53 @@ namespace ft
 				insert(position, (std::size_t)1, val);
 				return (position);
 			};
+			ptrdiff_t distance(iterator first, iterator last)
+			{
+				ptrdiff_t dist = 0;
+				while (first != last)
+				{
+					first++;
+					dist++;
+				}
+				return(dist);
+			}
     	void insert (iterator position, size_type n, const value_type& val)
 			{
-
+				size_t m = distance(position, end()) + n - 1;
+				for (size_type i = 0; i < n; i++)
+					push_back(_ptr[_size - (i + 1)]);
+				iterator it = end() - 1;
+				for (size_type i = 0; i < m; i++)
+				{
+					*it = *(it - n);
+					it--;
+				}
+				for (size_type i = 0; i < n; i++)
+				{
+					*it = val;
+					it++;
+				}
 			};
+
 			template <class InputIterator>
     	void insert (iterator position, InputIterator first, InputIterator last)
 			{
-
+				size_type n = distance(first, last);
+				size_t m = distance(position, end()) + n - 1;
+				for (size_type i = 0; i < n; i++)
+					push_back(_ptr[_size - (i + 1)]);
+				iterator it = end() - 1;
+				for (size_type i = 0; i < m; i++)
+				{
+					*it = *(it - n);
+					it--;
+				}
+				for (size_type i = 0; i < n; i++)
+				{
+					*it = *first;
+					first++;
+					it++;
+				}
 			};
 			// iterator erase (iterator position);
 			// iterator erase (iterator first, iterator last);
