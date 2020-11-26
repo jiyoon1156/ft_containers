@@ -96,9 +96,23 @@ namespace ft
 			bool SearchData(T data);
 			void RemoveNode(T data);
 			void Display();
-			void begin();
-			void end();
+			Node<T> *begin();
+			Node<T> *end();
 	};
+
+	template <typename T>
+	Node<T> *BSTree<T>::begin()
+	{
+		Node<T>* ptr = root;
+		return (SearchMinNode(ptr));
+	}
+
+	template <typename T>
+	Node<T> *BSTree<T>::end()
+	{
+		Node<T>* ptr = root;
+		return (SearchMaxNode(ptr));
+	}
 
 	template <typename T>
 	void BSTree<T>::RemoveNode(T data)

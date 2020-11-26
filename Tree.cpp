@@ -23,5 +23,9 @@ int main()
 	BST->RemoveNode(6);
 	BST->RemoveNode(3);
 	BST->Display(); std::cout << std::endl;
+
+	std::cout << "===================" << std::endl;
+	std::cout << "Begin is " << BST->begin()->data << std::endl;
+	std::cout << "End is " <<BST->end()->data<< std::endl;
 	return 0;
 }
