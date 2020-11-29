@@ -27,5 +27,6 @@ int main()
 	std::cout << "===================" << std::endl;
 	std::cout << "Begin is " << BST->begin()->data << std::endl;
 	std::cout << "End is " <<BST->end()->data<< std::endl;
+	std::cout << "Root is " <<BST->Root()->data<< std::endl;
 	return 0;
 }

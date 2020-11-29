@@ -98,6 +98,7 @@ namespace ft
 			void Display();
 			Node<T> *begin();
 			Node<T> *end();
+			Node<T> *Root();
 	};
 
 	template <typename T>
@@ -112,6 +113,12 @@ namespace ft
 	{
 		Node<T>* ptr = root;
 		return (SearchMaxNode(ptr));
+	}
+
+	template <typename T>
+	Node<T> *BSTree<T>::Root()
+	{
+		return (root);
 	}
 
 	template <typename T>
