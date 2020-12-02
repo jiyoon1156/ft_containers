@@ -6,8 +6,8 @@
 namespace ft
 {
 
-	template <class pair, class Category = bidirectional_iterator_tag>
-	class MapIterator //: public iterator<bidirectional_iterator_tag, pair>
+	template <class pair>//, class Category = bidirectional_iterator_tag>
+	class MapIterator : public iterator<bidirectional_iterator_tag, pair>
 	{
 		private:
 			Node<pair>*	_ptr;
@@ -132,7 +132,6 @@ namespace ft
 						return comp(x.first, y.first);
 					}
 			};
-
 			typedef Alloc								allocator_type;
 			typedef typename Alloc::reference			reference;
 			typedef typename Alloc::const_reference		const_reference;
@@ -162,11 +161,11 @@ namespace ft
 			}
 			~Map()
 			{
-				// clear();
+				clear();
 			}
 			Map& operator=(const Map& x)
 			{
-				// clear();
+				clear();
 				_comp = x._comp;
 				_alloc = x._alloc;
 
@@ -252,49 +251,49 @@ namespace ft
 					++_size;
 				}
 			}
-			// void		erase(iterator position)
-			// {
-			// 	Node<value_type>*	node = position.getPtr();
-			// 	_tree.erase(node);
-			// 	--_size;
-			// }
-			// size_type	erase(const key_type& k)
-			// {
-			// 	Node<value_type>*	node;
+			void		erase(iterator position)
+			{
+				Node<value_type>*	node = position.getPtr();
+				_tree.erase(node);
+				--_size;
+			}
+			size_type	erase(const key_type& k)
+			{
+				Node<value_type>*	node;
+				// std::cout << "here erase\n";
+				if ((node = _tree.find(k)))
+				{
+					_tree.erase(node);
+					// --_size;
+					return (1);
+				}
+				return (0);
+			}
+			void		erase(iterator first, iterator last)
+			{
+				iterator it = first;
+				key_type key, tmp, last_key;
 
-			// 	if ((node = _tree.find(k)))
-			// 	{
-			// 		_tree.erase(node);
-			// 		--_size;
-			// 		return (1);
-			// 	}
-			// 	return (0);
-			// }
-			// void		erase(iterator first, iterator last)
-			// {
-			// 	iterator it = first;
-			// 	key_type key, tmp, last_key;
-
-			// 	if (last != end())
-			// 		last_key = last->first;
-			// 	else
-			// 		last_key = 0;
-			// 	if (first != last)
-			// 		key = first->first;
-			// 	else
-			// 		return ;
-			// 	while (key != last_key && it != last)
-			// 	{
-			// 		++it;
-			// 		if (it != end())
-			// 			tmp = it->first;
-			// 		else
-			// 			tmp = 0;
-			// 		erase(key);
-			// 		it = find(tmp);
-			// 		key = tmp;
-			// 	}
-			// }
+				if (last != end())
+					last_key = last->first;
+				else
+					last_key = 0;
+				if (first != last)
+					key = first->first;
+				else
+					return ;
+				while (key != last_key && it != last)
+				{
+					++it;
+					if (it != end())
+						tmp = it->first;
+					else
+						tmp = 0;
+					erase(key);
+					it = find(tmp);
+					key = tmp;
+				}
+			}
 			void		swap(Map& x)
 			{
 				std::swap(_tree, x._tree);
@@ -302,10 +301,10 @@ namespace ft
 				std::swap(_comp, x._comp);
 				std::swap(_alloc, x._alloc);
 			}
-			// void		clear()
-			// {
-			// 	erase(begin(), end());
-			// }
+			void		clear()
+			{
+				erase(begin(), end());
+			}
 
 			key_compare key_comp() const
 			{

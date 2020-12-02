@@ -58,53 +58,70 @@ int main ()
 	// bool(*fn_pt)(char,char) = fncomp;
 	// ft::Map<char,int,bool(*)(char,char)> fifth (fn_pt); // function pointer as Compare
 
-	std::cout << "=========Iterators=========\n";
+	// std::cout << "=========Iterators=========\n";
 
-	ft::Map<char,int> mymap;
-	mymap['x'] = 100;
-	mymap['y'] = 200;
-	mymap['z'] = 300;
-	std::cout << "print with Iterators :\n";
-	for (ft::Map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    	std::cout << it->first << " => " << it->second << '\n';
-	std::cout << "in my map " << mymap['x'] << std::endl;
-	std::cout << "in my map " << mymap['y'] << std::endl;
-	std::cout << "in my map " << mymap['z'] << std::endl;
+	// ft::Map<char,int> mymap;
+	// mymap['x'] = 100;
+	// mymap['y'] = 200;
+	// mymap['z'] = 300;
+
+	// std::cout << "print with Iterators :\n";
+	// for (ft::Map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+  //   	std::cout << it->first << " => " << it->second << '\n';
+
 	// std::cout << "print with ReverseItreators :\n";
 	// for (ft::Map<char,int>::reverse_iterator rit = mymap.rbegin() ; rit != mymap.rend() ; ++rit)
 	// 	std::cout << rit->first << " => " << rit->second << '\n';
 
-	// std::cout << "=========Erase=========\n";
+	std::cout << "=========Erase=========\n";
 
-	// ft::Map<char , int> map2;
+	ft::Map<char , int> map2;
+
+	map2['a']=10;
+	map2['b']=20;
+	map2['c']=30;
+	map2['d']=40;
+	map2['e']=50;
+	map2['f']=60;
 
 	// map2['a']=10;
-	// map2['b']=20;
-	// map2['c']=30;
 	// map2['d']=40;
+	// map2['c']=30;
+	// map2['b']=20;
 	// map2['e']=50;
 	// map2['f']=60;
 
-	// /*
-	// **	   d
-	// **    / \
-	// **   b   e
-	// **  / \   \
-	// ** a   c   f
-	// */
+	/*
+	**	   d
+	**    / \
+	**   b   e
+	**  / \   \
+	** a   c   f
+	*/
 
-	// ft::Map<char,int>::iterator it;
+	ft::Map<char,int>::iterator it;
 
-	// // when no child
+	// when no child
 	// std::cout << "when no child" << std::endl;
-	// ft::Map<char , int> map1;
+	ft::Map<char , int> map1;
 
-	// map1.insert(map2.begin(), map2.end());
-  //   map1.erase('c');                  // erasing by key
-	// for (it=map1.begin(); it!=map1.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
-	// for (ft::Map<char,int>::reverse_iterator it=map1.rbegin(); it!=map1.rend(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
+	// map2.erase('c');
+	// map2.erase('d');
+	// it = map2.begin();
+	// std::cout << it->first << std::endl;
+	// it = map2.end();
+	// it--;
+	// std::cout << it->first << std::endl;
+	// for (it=map2.begin(); it!=map2.end(); ++it)
+		// std::cout << it->first << " => " << it->second << '\n';
+
+
+	map1.insert(map2.begin(), map2.end());
+    map1.erase('c');                  // erasing by key
+	for (it=map1.begin(); it!=map1.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+	for (ft::Map<char,int>::reverse_iterator it=map1.rbegin(); it!=map1.rend(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
 
 	// // when one child
 	// std::cout << "when one child" << std::endl;
