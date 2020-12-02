@@ -11,7 +11,7 @@ int main()
 	BST->AddNode(22);
 	BST->AddNode(17);
 	BST->AddNode(10);
-	BST->AddNode(2);
+	BST->AddNode(0);
 
 	BST->Display(); std::cout << std::endl;
 	BST->SearchData(4);

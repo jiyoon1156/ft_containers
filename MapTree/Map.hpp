@@ -60,6 +60,7 @@ namespace ft
 
 		MapIterator(const MapIterator &it)
 		{
+			std::cout << "copy iter\n";
 			*this = it;
 		}
 
@@ -289,76 +290,49 @@ namespace ft
 			mapped_type				&operator[](const key_type &k)
 			{
 				std::cout << "operator[]\n";
-				BinaryTreeMap<Key, T>	*node;
+				// BinaryTreeMap<Key, T>	*node;
 
-				node = this->root;
-				// while (!node)
+				// node = this->root;
+				// while (node)
 				// {
-					// if (k == node->pair.first)
-					// 	return (node->pair.second);
-					// if (this->comp(k, node->pair.first))
-					// {
-					// 	if (node->left)
-					// 		node = node->left;
-					// 	else
-					// 		insert(iterator(node), value_type(k, 0));
-					// }
-					// else
-					// {
-					// 	if (node->right)
-					// 		node = node->right;
-					// 	else
-					// 		insert(iterator(node), value_type(k, 0));
-					// }
+				// 	if (k == node->pair.first)
+				// 		return (node->pair.second);
+				// 	if (this->comp(k, node->pair.first))
+				// 	{
+				// 		if (node->left)
+				// 			node = node->left;
+				// 		else
+				// 			insert(iterator(node), value_type(k, 0));
+				// 	}
+				// 	else
+				// 	{
+				// 		if (node->right)
+				// 			node = node->right;
+				// 		else
+				// 			insert(iterator(node), value_type(k, 0));
+				// 	}
 				// }
-				std::cout << k << std::endl;
-				insert(value_type(k, 0));
-				std::cout << "=================\n";
-				std::cout <<"pair first " <<this->root->pair.first << std::endl;
-				std::cout <<"pair second "<<this->root->pair.second<< std::endl;
-				std::cout <<"pair second "<<this->root<< std::endl;
-				std::cout << "=================\n";
-				return (this->root->pair.second);
+				// std::cout << k << std::endl;
+				// insert(value_type(k, 0));
+				// std::cout << "=================\n";
+				// std::cout <<"pair first " <<this->root->pair.first << std::endl;
+				// std::cout <<"pair second "<<this->root->pair.second<< std::endl;
+				// std::cout <<"pair second "<<this->root<< std::endl;
+				// std::cout << "=================\n";
+				// return (this->root->pair.second);
+				std::pair<iterator, bool> ret = insert(std::make_pair(k, mapped_type()));
+				return (ret.first->second);
 			}
 			std::pair<iterator, bool>	insert(const value_type &val)
 			{
-				BinaryTreeMap<Key, T> *node = new BinaryTreeMap<Key, T>();
-				BinaryTreeMap<Key, T> *tmp_root = nullptr;
-
-				node->pair = val;
-				if (this->root == nullptr)
-				{
-					this->root = node;
-					std::cout << node->pair.first << node->pair.second;
-					std::cout << "this root nullptr?\n";
-				}
-				else
-				{
-					std::cout << "this root not null?\n" << this->root;
-					BinaryTreeMap<Key, T> *ptr = this->root;
-
-					while (ptr != nullptr)
-					{
-						tmp_root = ptr;
-						if (node->pair.first < ptr->pair.first)
-						{
-							std::cout << "1111111111";
-							ptr = ptr->left;
-						}
-						else
-						{
-							std::cout << "22222222222";
-							ptr = ptr->right;
-						}
-					}
-					//넣을 위치에 대입
-					if (node->pair.first < tmp_root->pair.first )
-						tmp_root->left = node;
-					else
-						tmp_root->right = node;
-				}
-				return (std::pair<iterator, bool>(iterator(node), true));
+				Node<value_type>*	node =_tree.find(val.first);
+				if (node) //만들어야할 것이 이미 존재하므로 false
+					return (std::make_pair(iterator(node, _tree.end()), false));
+				node = _tree.insert(_tree.root(), val);
+				++_size;
+				return (std::make_pair(iterator(node, _tree.end()), true));
 			}
+
 			iterator				insert(iterator position, const value_type &val)
 			{
 				iterator it;

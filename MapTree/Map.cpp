@@ -63,12 +63,14 @@ int main ()
 	ft::Map<char,int> mymap;
 	std::cout << "111\n";
 	mymap['x'] = 100;
-	// mymap['y'] = 200;
+	std::cout << "in my map " << mymap['x'] << std::endl;
+	mymap['y'] = 200;
 	// mymap['z'] = 300;
 	std::cout << "222\n";
 	std::cout << "print with Iterators :\n";
-	for (ft::Map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    	std::cout << it->first << " => " << it->second << '\n';
+	// for (ft::Map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+  //   	std::cout << it->first << " => " << it->second << '\n';
+	// std::cout << "in my map " << mymap['x'] << std::endl;
 
 	// std::cout << "print with ReverseItreators :\n";
 	// for (ft::Map<char,int>::reverse_iterator rit = mymap.rbegin() ; rit != mymap.rend() ; ++rit)

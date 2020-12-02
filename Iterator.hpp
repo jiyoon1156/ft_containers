@@ -11,6 +11,15 @@ namespace ft	{
 	struct bidirectional_iterator_tag : forward_iterator_tag {};
 	struct random_access_iterator_tag : bidirectional_iterator_tag {};
 
+	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
+	struct iterator
+	{
+		typedef T			value_type;				//iterator가 가리키는 값의 타입
+		typedef Distance	difference_type;		//두 iterators의 차이 (두 포인터의 차이, signed int)
+		typedef Pointer		pointer;				//iterator가 가리키는 값의 pointer(*)
+		typedef Reference	reference;				//iterator가 가리키는 값의 reference(&)
+		typedef Category	iterator_category;		//iterator category
+	};
 	/*				*				 */
 	/* iterator traits */
 	/*				*				 */
