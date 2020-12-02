@@ -6,7 +6,7 @@
 namespace ft
 {
 
-	template <class pair>//, class Category = bidirectional_iterator_tag>
+	template <class pair, class Category = bidirectional_iterator_tag>
 	class MapIterator : public iterator<bidirectional_iterator_tag, pair>
 	{
 		private:
@@ -25,7 +25,6 @@ namespace ft
 			}
 			MapIterator&	operator++(void)
 			{
-				//successor
 				if (_ptr == _tail)
 					_ptr = nullptr;
 				else if (_ptr->right)
@@ -54,7 +53,6 @@ namespace ft
 			}
 			MapIterator&	operator--(void)
 			{
-				//predecessor
 				if (_ptr == nullptr)
 					_ptr = _tail;
 				else if (_ptr->left)
@@ -103,53 +101,50 @@ namespace ft
 			}
 	};
 
-	template <class Key, class T, class Compare = std::less<Key>,
-				class Alloc = std::allocator<std::pair<const Key,T> > >
+	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
 	class Map
 	{
 		private:
-			size_t	_size;
-			Compare	_comp;
-			Alloc	_alloc;
+			size_t													_size;
+			Compare													_comp;
+			Alloc														_alloc;
 			BSTree<Key, T, Compare, Alloc>	_tree;
 		public:
-			typedef	Key									key_type;
-			typedef	T									mapped_type;
+			typedef	Key																			key_type;
+			typedef	T																				mapped_type;
 			typedef std::pair<const key_type, mapped_type>	value_type;
-			typedef Compare								key_compare;
+			typedef Compare																	key_compare;
 			class 	value_compare
 			{
 					friend class Map;
 				protected:
 					Compare comp;
-					value_compare(Compare c) : comp(c) {}  // constructed with map's comparison object
+					value_compare(Compare c) : comp(c) {}
 				public:
-					typedef bool result_type;
-					typedef value_type first_argument_type;
-					typedef value_type second_argument_type;
+					typedef bool				result_type;
+					typedef value_type	first_argument_type;
+					typedef value_type	second_argument_type;
 					bool operator() (const value_type& x, const value_type& y) const
 					{
 						return comp(x.first, y.first);
 					}
 			};
-			typedef Alloc								allocator_type;
-			typedef typename Alloc::reference			reference;
-			typedef typename Alloc::const_reference		const_reference;
-			typedef typename Alloc::pointer				pointer;
+			typedef Alloc														allocator_type;
+			typedef typename Alloc::reference				reference;
+			typedef typename Alloc::const_reference	const_reference;
+			typedef typename Alloc::pointer					pointer;
 			typedef typename Alloc::const_pointer		const_pointer;
-			typedef MapIterator<value_type> 		iterator;
-			typedef MapIterator<value_type>		const_iterator;
-			typedef ReverseIterator<iterator>			reverse_iterator;
+			typedef MapIterator<value_type> 				iterator;
+			typedef MapIterator<value_type>					const_iterator;
+			typedef ReverseIterator<iterator>				reverse_iterator;
 			typedef ReverseIterator<const_iterator>	const_reverse_iterator;
-			typedef std::ptrdiff_t						difference_type;
-			typedef size_t								size_type;
+			typedef std::ptrdiff_t									difference_type;
+			typedef size_t													size_type;
 
-			explicit Map(const key_compare& comp = key_compare(),
-            	const allocator_type& alloc = allocator_type())
+			explicit Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 			: _size(0), _comp(comp), _alloc(alloc), _tree(comp, alloc) {}
 			template <class InputIterator>
-			Map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type())
+			Map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 			: _size(0), _comp(comp), _alloc(alloc), _tree(comp, alloc)
 			{
 				insert(first, last);
@@ -172,7 +167,6 @@ namespace ft
 				insert(x.begin(), x.end());
 				return (*this);
 			}
-
 			iterator				begin(void)
 			{
 				return (iterator(_tree.begin(), _tree.end()));
@@ -205,7 +199,6 @@ namespace ft
 			{
 				return (const_reverse_iterator(begin()));
 			}
-
 			bool		empty(void) const
 			{
 				return (_size == 0);
@@ -221,7 +214,6 @@ namespace ft
 
 			mapped_type&	operator[] (const key_type& k)
 			{
-				// value_type = (k, mapped_type())인 새로운 쌍
 				std::pair<iterator, bool> ret = insert(std::make_pair(k, mapped_type()));
 				return (ret.first->second);
 			}
@@ -229,7 +221,7 @@ namespace ft
 			std::pair<iterator,bool> insert(const value_type& val)
 			{
 				Node<value_type>*	node =_tree.find(val.first);
-				if (node) //만들어야할 것이 이미 존재하므로 false
+				if (node)
 					return (std::make_pair(iterator(node, _tree.end()), false));
 				node = _tree.insert(_tree.root(), val);
 				++_size;
@@ -260,11 +252,10 @@ namespace ft
 			size_type	erase(const key_type& k)
 			{
 				Node<value_type>*	node;
-				// std::cout << "here erase\n";
 				if ((node = _tree.find(k)))
 				{
 					_tree.erase(node);
-					// --_size;
+					--_size;
 					return (1);
 				}
 				return (0);
