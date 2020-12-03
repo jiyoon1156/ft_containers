@@ -1,7 +1,7 @@
 #ifndef BSTREE_HPP
 # define BSTREE_HPP
 
-#include "../Iterator.hpp"
+#include "Iterator.hpp"
 # include <cstddef>
 # include <memory>
 # include <iostream>
