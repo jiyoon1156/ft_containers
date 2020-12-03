@@ -84,14 +84,6 @@ int main ()
 	map2['e']=50;
 	map2['f']=60;
 
-	/*
-	**	   d
-	**    / \
-	**   b   e
-	**  / \   \
-	** a   c   f
-	*/
-
 	ft::Map<char,int>::iterator it;
 
 	// when no child

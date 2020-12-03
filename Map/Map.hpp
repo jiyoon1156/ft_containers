@@ -1,7 +1,7 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-#include "Tree_mine.hpp"
+#include "BSTree.hpp"
 
 namespace ft
 {
@@ -10,37 +10,37 @@ namespace ft
 	class MapIterator : public iterator<bidirectional_iterator_tag, pair>
 	{
 		private:
-			Node<pair>*	_ptr;
+			Node<pair>*	_node;
 			Node<pair>*	_tail;
 		public:
-			MapIterator(void) : _ptr(nullptr), _tail(nullptr) {}
+			MapIterator(void) : _node(nullptr), _tail(nullptr) {}
 			virtual ~MapIterator() {}
-			MapIterator(Node<pair>* ptr, Node<pair>* tail) : _ptr(ptr), _tail(tail) {}
+			MapIterator(Node<pair>* node, Node<pair>* tail) : _node(node), _tail(tail) {}
 			MapIterator(const MapIterator& copy) { *this = copy; }
 			MapIterator&	operator=(const MapIterator& other)
 			{
-				_ptr = other._ptr;
+				_node = other._node;
 				_tail = other._tail;
 				return (*this);
 			}
 			MapIterator&	operator++(void)
 			{
-				if (_ptr == _tail)
-					_ptr = nullptr;
-				else if (_ptr->right)
+				if (_node == _tail)
+					_node = nullptr;
+				else if (_node->right)
 				{
-					_ptr = _ptr->right;
-					while (_ptr->left)
-						_ptr = _ptr->left;
+					_node = _node->right;
+					while (_node->left)
+						_node = _node->left;
 				}
 				else
 				{
-					Node<pair>*	tmp = _ptr;
-					_ptr = _ptr->parent;
-					while (_ptr->left != tmp)
+					Node<pair>*	tmp = _node;
+					_node = _node->parent;
+					while (_node->left != tmp) //node->left != tmp이면 반복문 계속 수행
 					{
-						tmp = _ptr;
-						_ptr = _ptr->parent;
+						tmp = _node;
+						_node = _node->parent;
 					}
 				}
 				return (*this);
@@ -53,22 +53,22 @@ namespace ft
 			}
 			MapIterator&	operator--(void)
 			{
-				if (_ptr == nullptr)
-					_ptr = _tail;
-				else if (_ptr->left)
+				if (_node == nullptr)
+					_node = _tail;
+				else if (_node->left)
 				{
-					_ptr = _ptr->left;
-					while (_ptr->right)
-						_ptr = _ptr->right;
+					_node = _node->left;
+					while (_node->right)
+						_node = _node->right;
 				}
 				else
 				{
-					Node<pair>*	tmp = _ptr;
-					_ptr = _ptr->parent;
-					while (_ptr->right != tmp)
+					Node<pair>*	tmp = _node;
+					_node = _node->parent;
+					while (_node->right != tmp)
 					{
-						tmp = _ptr;
-						_ptr = _ptr->parent;
+						tmp = _node;
+						_node = _node->parent;
 					}
 				}
 				return (*this);
@@ -81,23 +81,23 @@ namespace ft
 			}
 			bool	operator==(const MapIterator &other) const
 			{
-				return (_ptr == other._ptr);
+				return (_node == other._node);
 			}
 			bool	operator!=(const MapIterator &other) const
 			{
-				return (_ptr != other._ptr);
+				return (_node != other._node);
 			}
 			pair&	operator*(void)
 			{
-				return (_ptr->data);
+				return (_node->data);
 			}
 			pair*	operator->(void)
 			{
-				return (&(_ptr->data));
+				return (&(_node->data));
 			}
 			Node<pair>*	getPtr(void)
 			{
-				return (_ptr);
+				return (_node);
 			}
 	};
 
@@ -149,22 +149,21 @@ namespace ft
 			{
 				insert(first, last);
 			}
-			Map(const Map& x)
-			: _size(0), _comp(x._comp), _alloc(x._alloc), _tree(x._comp, x._alloc)
+			Map(const Map& copy)
+			: _size(0), _comp(copy._comp), _alloc(copy._alloc), _tree(copy._comp, copy._alloc)
 			{
-				*this = x;
+				*this = copy;
 			}
 			~Map()
 			{
 				clear();
 			}
-			Map& operator=(const Map& x)
+			Map& operator=(const Map& other)
 			{
 				clear();
-				_comp = x._comp;
-				_alloc = x._alloc;
-
-				insert(x.begin(), x.end());
+				_comp = other._comp;
+				_alloc = other._alloc;
+				insert(other.begin(), other.end());
 				return (*this);
 			}
 			iterator				begin(void)
@@ -187,7 +186,7 @@ namespace ft
 			{
 				return (reverse_iterator(end()));
 			}
-			const_reverse_iterator	rbegin() const
+			const_reverse_iterator	rbegin(void) const
 			{
 				return (const_reverse_iterator(end()));
 			}
@@ -195,7 +194,7 @@ namespace ft
 			{
 				return (reverse_iterator(begin()));
 			}
-			const_reverse_iterator rend() const
+			const_reverse_iterator rend(void) const
 			{
 				return (const_reverse_iterator(begin()));
 			}
@@ -214,8 +213,8 @@ namespace ft
 
 			mapped_type&	operator[] (const key_type& k)
 			{
-				std::pair<iterator, bool> ret = insert(std::make_pair(k, mapped_type()));
-				return (ret.first->second);
+				std::pair<iterator, bool> res = insert(std::make_pair(k, mapped_type()));
+				return (res.first->second);
 			}
 
 			std::pair<iterator,bool> insert(const value_type& val)
@@ -299,6 +298,7 @@ namespace ft
 
 			key_compare key_comp() const
 			{
+				//returns the same as operator<
 				return (_comp);
 			}
 			value_compare value_comp() const
@@ -316,9 +316,10 @@ namespace ft
 			}
 			size_type count(const key_type& k) const
 			{
+				//return 1 (if the element is found) or zero (otherwise).
 				return (find(k) != end());
 			}
-			iterator lower_bound(const key_type& k)
+			iterator lower_bound(const key_type& k) //k랑 같은값 있으면 k 지목
 			{
 				iterator it = begin();
 				while (it != end())
@@ -340,7 +341,7 @@ namespace ft
 				}
 				return (end());
 			}
-			iterator upper_bound(const key_type& k)
+			iterator upper_bound(const key_type& k)// k랑 같은 값있으면 k보다 하나 더 큰거 지목
 			{
 				iterator it = begin();
 				while (it != end())
@@ -362,6 +363,7 @@ namespace ft
 				}
 				return (end());
 			}
+			//Returns the bounds of a range that includes all the elements in the container which have a key equivalent to k.
 			std::pair<const_iterator,const_iterator> equal_range(const key_type& k) const
 			{
 				return std::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));

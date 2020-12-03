@@ -1,5 +1,5 @@
-#ifndef TREE_MINE_HPP
-# define TREE_MINE_HPP
+#ifndef BSTREE_HPP
+# define BSTREE_HPP
 
 #include "../Iterator.hpp"
 # include <cstddef>
@@ -39,7 +39,7 @@ namespace ft
 			Alloc	_alloc;
 
 			BSTree();
-			Node<pair>*	create_node(pair data, Node<pair>* left, Node<pair>* right, Node<pair>* parent)
+			Node<pair>*	dup_node(pair data, Node<pair>* left, Node<pair>* right, Node<pair>* parent)
 			{
 				Node<pair>	tmp(data, left, right, parent);
 				Node<pair>*	new_node;
@@ -48,7 +48,7 @@ namespace ft
 				node_alloc(_alloc).construct(new_node, tmp);
 				return (new_node);
 			}
-			void		delete_node(Node<pair>** node)
+			void		del_node(Node<pair>** node)
 			{
 				if (node)
 				{
@@ -72,7 +72,7 @@ namespace ft
 					else
 						throw std::range_error("same key exist");
 				}
-				node = create_node(data, nullptr, nullptr, tmp_parent);
+				node = dup_node(data, nullptr, nullptr, tmp_parent);
 				//값 넣어주기
 				if (!tmp_parent && !_root)
 					_root = node;
@@ -96,7 +96,7 @@ namespace ft
 				if (node->left && node->right)
 				{
 					tmp = min(node->right);
-					node = create_node(tmp->data, node->left, node->right, node->parent);
+					node = dup_node(tmp->data, node->left, node->right, node->parent);
 					remove_node(tmp);
 				}
 				tmp = node->left ? node->left : node->right;
@@ -120,7 +120,7 @@ namespace ft
 					else
 						node->parent->left = tmp;
 				}
-				delete_node(&node);
+				del_node(&node);
 				_head = min(_root);
 				_tail = max(_root);
 			}
