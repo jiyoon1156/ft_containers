@@ -1,14 +1,13 @@
-#ifndef LIST_HPP
-#define LIST_HPP
+#ifndef LIST_BACKUP_HPP
+#define LIST_BACKUP_HPP
 
 #include "Iterator.hpp"
 #include "Node.hpp"
 
 namespace ft
 {
-	// template <typename T, class Category = bidirectional_iterator_tag>
-	template <class T>
-	class ListIterator : public iterator<bidirectional_iterator_tag, T>
+	template <typename T, class Category = bidirectional_iterator_tag>
+	class ListIterator
 	{
 		private:
 			Node<T>* _ptr;
@@ -16,13 +15,13 @@ namespace ft
 			/*           *           */
 			/* iterator member types */
 			/*           *           */
-			// typedef T 							value_type;
-			// typedef std::ptrdiff_t	difference_type;
-			// typedef T*							pointer;
-			// typedef T&							reference;
-			// typedef Category				iterator_category;
+			typedef T 							value_type;
+			typedef std::ptrdiff_t	difference_type;
+			typedef T*							pointer;
+			typedef T&							reference;
+			typedef Category				iterator_category;
 
-			ListIterator(): _ptr(nullptr) {}
+			ListIterator(){}
 			virtual ~ListIterator(){}
 			ListIterator(Node<T> *ptr) : _ptr(ptr) {}
 			ListIterator(const ListIterator& copy)
@@ -40,7 +39,7 @@ namespace ft
 			}
 			bool operator!=(const ListIterator &other) const
 			{
-				return (!(_ptr == other._ptr));
+				return (_ptr != other._ptr);
 			}
 			T& operator*(void)
 			{
@@ -84,29 +83,9 @@ namespace ft
 	class List
 	{
 		private:
-			typedef typename Alloc::template rebind<Node<T> >::other node_alloc;
 			Node<T> *_head;
 			Node<T>	*_tail;
 			size_t	_size;
-			Alloc		_alloc;
-			void		del_node(Node<T>* node)
-			{
-				node_alloc(_alloc).destroy(node);
-				node_alloc(_alloc).deallocate(node, 1);
-				node = nullptr;
-			}
-			Node<T>	*dup_node(Node<T> *prev, Node<T> *next, T data)
-			{
-				Node<T> tmp;
-				Node<T> *node;
-
-				tmp.prev = prev;
-				tmp.next = next;
-				tmp.data = data;
-				node = node_alloc(_alloc).allocate(1);
-				node_alloc(_alloc).construct(node, tmp);
-				return (node);
-			}
 		public:
 			typedef T																value_type;
 			typedef Alloc														allocator_type;
@@ -126,49 +105,50 @@ namespace ft
 			// template <class InputIterator>
 			// List(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
-			explicit List(const allocator_type& alloc = allocator_type()): _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
+			explicit List(): _head(nullptr), _tail(nullptr), _size(0)
 			{
-				_tail = dup_node(nullptr, nullptr, 0);
+				_tail = new Node<T>();
+				_tail->next = nullptr;
+				_tail->prev = nullptr;
+				_tail->data = 0;
 				_head = _tail;
 			};
-			explicit List(size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type()): _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
+			explicit List(size_type n, const value_type& val = value_type()): _head(nullptr), _tail(nullptr), _size(0)
 			{
-				_tail = dup_node(nullptr, nullptr, 0);
-				_head = _tail;
+				_tail = new Node<T>();
+				_tail->next = nullptr;
+				_tail->prev = nullptr;
+				_tail->data = 0;
 				//n 개의 컨테이너를 val 값으로 채운다.
-				insert(end(), (size_type)n, val);
+				_head = _tail;
+				insert(_head, n, val);
 			};
 			template <class InputIterator>
-			List(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
+			List(InputIterator first, InputIterator last): _head(nullptr), _tail(nullptr), _size(0)
 			{
-				_tail = dup_node(nullptr, nullptr, 0);
+				_tail = new Node<T>();
+				_tail->next = nullptr;
+				_tail->prev = nullptr;
+				_tail->data = 0;
 				_head = _tail;
 				//input iterator라 처음과 끝사이에 있는 값들이 채워짐
-				insert(end(), first, last);
+				insert(_head, first, last);
 			};
-			~List()
-			{
-				// if (_size)
-				// 	clear();
-				// if (_tail)
-				// 	del_node(_tail);
-			};
-			List(const List& copy): _head(nullptr), _tail(nullptr), _size(0)
+			~List(){};
+			List(const List& copy)
 			{
 				*this = copy;
 			};
 			List& operator=(const List& other)
 			{
-				_alloc = other._alloc;
-				if (_size != 0)
-					clear();
+				// if (_size != 0)
+				// 	clear();
 				if (!_tail)
 				{
-					_tail = dup_node(nullptr, nullptr, 0);
-					// _tail = new Node<T>();
-					// _tail->next = nullptr;
-					// _tail->prev = nullptr;
-					// _tail->data = 0;
+					_tail = new Node<T>();
+					_tail->next = nullptr;
+					_tail->prev = nullptr;
+					_tail->data = 0;
 					_head = _tail;
 				}
 				if (other.size())
@@ -210,6 +190,11 @@ namespace ft
 				return const_reverse_iterator(begin());
 			};
 
+			// const_iterator cbegin() const noexcept;
+			// const_iterator cend() const noexcept;
+			// const_reverse_iterator crbegin() const noexcept;
+			// const_reverse_iterator crend() const noexcept;
+
 			/* capacity */
 			bool empty() const
 			{
@@ -246,21 +231,21 @@ namespace ft
 			template <class InputIterator>
   		void assign (InputIterator first, InputIterator last)
 			{
-				if (_size)
-					clear();
-				insert(end(), first, last);
+				clear();
+				insert(begin(), first, last);
 			};
 			void assign (size_type n, const value_type& val)
 			{
-				if (_size)
-					clear();
-				insert(end(), n, val);
+				clear();
+				insert(begin(), n, val);
 			};
 
 			void push_front (const value_type& val)
 			{
-				Node<T> *new_node;
-				new_node = dup_node(nullptr, _head, val);
+				Node<T> *new_node = new Node<T>();
+				new_node->prev = nullptr;
+				new_node->next = _head;
+				new_node->data = val;
 				_head->prev = new_node;
 				_head = new_node;
 				++_size;
@@ -273,14 +258,18 @@ namespace ft
 				Node<T> *tmp;
 				tmp = _head;
 				_head = _head->next;
-				del_node(tmp);
+				_head->prev = nullptr;
+				delete tmp;
 				--_size;
 			};
 
 			void push_back (const value_type& val)
 			{
-				Node<T> *new_node;
-				new_node = dup_node(_tail->prev, _tail, val);
+
+				Node<T> *new_node = new Node<T>();
+				new_node->prev = _tail->prev;
+				new_node->next = _tail;
+				new_node->data = val;
 				if (_size != 0)
 					_tail->prev->next = new_node;
 				else
@@ -291,25 +280,37 @@ namespace ft
 
 			void pop_back()
 			{
-				if (_head == _tail)
-					return ;
+				// if (_head == _tail)
+				// 	return ;
 				//리스트 탐색해서 마지막 전 노드 찾는다
 				//그 노드 다음을 널 가리키게 함
 				//마지막 노드 제거
+				// Node<T> *tmp = _tail->prev;
+				// _tail->prev = tmp->prev;
+				// if (tmp == _head)
+				// 	_head = _tail;
+				// else
+				// 	tmp->prev->next = _tail;
+
+				// delete tmp;
+				// --_size;
+
+				if (_head == _tail)
+					return ;
 				Node<T> *tmp;
 				tmp = _tail->prev;
 				_tail->prev = tmp->prev;
-				if (tmp == _head)
-					_head = _tail;
-				else
+				if (tmp->prev != nullptr)
 					tmp->prev->next = _tail;
-				del_node(tmp);
+				else
+					_head = _tail;
+				delete tmp;
 				--_size;
 			};
 
 			iterator insert (iterator position, const value_type& val)
 			{
-				insert(position, (size_type)1, val);
+				insert(position, (std::size_t)1, val);
 				return (position.getPtr()->prev);
 			};
 
@@ -317,7 +318,7 @@ namespace ft
 			{
 				//n개만큼 노드 삽입하는데 그것의 값들은 val
 				size_type i = 0;
-				if (position == begin()) //|| position.getPtr() == nullptr)
+				if (position == begin() || position.getPtr() == nullptr)
 				{
 					push_front(val);
 					++i;
@@ -327,16 +328,15 @@ namespace ft
 					push_back(val);
 					++i;
 				}
-				Node<T> *tmp;
-				tmp = position.getPtr()->prev;
 				while (i < n)
 				{
-					Node<T> *new_node;
-					new_node = dup_node(tmp, tmp->next, val);
-					tmp->next = new_node;
-					new_node->next->prev = new_node;
+					Node<T> *new_node = new Node<T>();
+					new_node->prev = position.getPtr()->prev;
+					new_node->next = position.getPtr()->prev->next;
+					new_node->data = val;
+					position.getPtr()->prev->next = new_node;
+					position.getPtr()->prev = new_node;
 					++_size;
-					tmp = new_node;
 					++i;
 				}
 			};
@@ -356,16 +356,15 @@ namespace ft
 					push_back(*it);
 					++it;
 				}
-				Node<T> *tmp;
-				tmp = position.getPtr()->prev;
 				while (it != last)
 				{
-					Node<T> *new_node;
-					new_node = dup_node(tmp, tmp->next, *it);
-					tmp->next = new_node;
-					new_node->next->prev = new_node;
+					Node<T> *new_node = new Node<T>();
+					new_node->prev = position.getPtr()->prev;
+					new_node->next = position.getPtr()->prev->next;
+					new_node->data = *it;
+					position.getPtr()->prev->next = new_node;
+					position.getPtr()->prev = new_node;
 					++_size;
-					tmp = new_node;
 					++it;
 				}
 			};
@@ -383,30 +382,27 @@ namespace ft
 				Node<T> *tmp = position.getPtr();
 				tmp->prev->next = tmp->next;
 				tmp->next->prev = tmp->prev;
-				del_node(tmp);
+				delete tmp;
 				--_size;
-				return (tmp->next);
+				return (position.getPtr()->prev);
 			};
 
 			iterator erase (iterator first, iterator last)
 			{
-
-				Node<T> *tmp = first.getPtr();
 				iterator it = first;
 				while (it != last)
 				{
+					Node<T> *tmp = it.getPtr();
 					if (tmp == _head)
 						_head = tmp->next;
 					else
 						tmp->prev->next = tmp->next;
 					tmp->next->prev = tmp->prev;
-					del_node(tmp);
+					delete tmp;
 					--_size;
-					tmp = it.getPtr();
 					++it;
 				}
-				return (tmp);
-
+				return (it);
 			};
 
 			void swap (List& x)

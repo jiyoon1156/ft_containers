@@ -37,44 +37,43 @@ int main(void)
 	myints.pop();
 	std::cout << "2. size: " << myints.size() << '\n';
 
-	std::cout << "=====top==========" << std::endl;
-	ft::Stack<int> mystack1;
-	mystack1.push(10);
-	mystack1.push(20);
+	// std::cout << "=====top==========" << std::endl;
+	// ft::Stack<int> mystack1;
+	// mystack1.push(10);
+	// mystack1.push(20);
 
-	mystack1.top() -= 5;
+	// mystack1.top() -= 5;
 
-	std::cout << "mystack.top() is now " << mystack1.top() << '\n';
+	// std::cout << "mystack.top() is now " << mystack1.top() << '\n';
 
-	std::cout << "=====push and pop==========" << std::endl;
-	ft::Stack<int> mystack2;
+	// std::cout << "=====push and pop==========" << std::endl;
+	// ft::Stack<int> mystack2;
 
-	for (int i=0; i<5; ++i) mystack2.push(i);
+	// for (int i=0; i<5; ++i) mystack2.push(i);
 
-	std::cout << "Popping out elements...";
-	while (!mystack2.empty())
-	{
-		std::cout << ' ' << mystack2.top();
-		mystack2.pop();
-	}
-	std::cout << '\n';
+	// std::cout << "Popping out elements...";
+	// while (!mystack2.empty())
+	// {
+	// 	std::cout << ' ' << mystack2.top();
+	// 	mystack2.pop();
+	// }
+	// std::cout << '\n';
 
-	std::cout << "===========relational operators===========" << std::endl;
+	// std::cout << "===========relational operators===========" << std::endl;
 
-	if (mystack1 == mystack2)
-		std::cout << "mystack1 == mystack2" << std::endl;
-	if (mystack1 != mystack2)
-		std::cout << "mystack1 != mystack2" << std::endl;
-	if (mystack1 >= mystack2)
-		std::cout << "mystack1 >= mystack2" << std::endl;
-	if (mystack1 <= mystack2)
-		std::cout << "mystack1 <= mystack2" << std::endl;
-	if (mystack1 > mystack2)
-		std::cout << "mystack1 >= mystack2" << std::endl;
-	if (mystack1 < mystack2)
-		std::cout << "mystack1 <= mystack2" << std::endl;
+	// if (mystack1 == mystack2)
+	// 	std::cout << "mystack1 == mystack2" << std::endl;
+	// if (mystack1 != mystack2)
+	// 	std::cout << "mystack1 != mystack2" << std::endl;
+	// if (mystack1 >= mystack2)
+	// 	std::cout << "mystack1 >= mystack2" << std::endl;
+	// if (mystack1 <= mystack2)
+	// 	std::cout << "mystack1 <= mystack2" << std::endl;
+	// if (mystack1 > mystack2)
+	// 	std::cout << "mystack1 >= mystack2" << std::endl;
+	// if (mystack1 < mystack2)
+	// 	std::cout << "mystack1 <= mystack2" << std::endl;
 
-	std::cout << "===============================" << std::endl;
-
+	// std::cout << "===============================" << std::endl;
 	return (0);
 }
