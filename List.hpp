@@ -359,7 +359,7 @@ namespace ft
 			{
 				Node<T>	*pos = first.getPtr();
 				iterator it = first;
-
+				it++;
 				while (it != last)
 				{
 					if (pos == _head)
@@ -370,9 +370,10 @@ namespace ft
 					del_node(pos);
 					pos = it.getPtr();
 					--_size;
-					++it;
+					it++;
 				}
 				return (pos);
+
 			}
 			void swap(List& x)
 			{
