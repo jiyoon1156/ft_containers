@@ -120,6 +120,16 @@ namespace ft
 			size_t	_capa;
 			size_t	_size;
 			Alloc		_alloc;
+			ptrdiff_t distance(iterator first, iterator last)
+			{
+				ptrdiff_t dist = 0;
+				while (first != last)
+				{
+					first++;
+					dist++;
+				}
+				return(dist);
+			}
 		public:
 			typedef T																value_type;
 			typedef Alloc														allocator_type;
@@ -323,16 +333,7 @@ namespace ft
 				insert(position, (std::size_t)1, val);
 				return (position);
 			};
-			ptrdiff_t distance(iterator first, iterator last)
-			{
-				ptrdiff_t dist = 0;
-				while (first != last)
-				{
-					first++;
-					dist++;
-				}
-				return(dist);
-			}
+
     	void insert (iterator position, size_type n, const value_type& val)
 			{
 				size_t m = distance(position, end()) + n - 1;
