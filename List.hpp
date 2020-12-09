@@ -1,111 +1,103 @@
 #ifndef LIST_HPP
-#define LIST_HPP
+# define LIST_HPP
 
 #include "Iterator.hpp"
 #include "Node.hpp"
 
 namespace ft
 {
-	// template <typename T, class Category = bidirectional_iterator_tag>
 	template <class T>
 	class ListIterator : public iterator<bidirectional_iterator_tag, T>
 	{
 		private:
-			Node<T>* _ptr;
+			Node<T>*	_ptr;
 		public:
-			/*           *           */
-			/* iterator member types */
-			/*           *           */
-			// typedef T 							value_type;
-			// typedef std::ptrdiff_t	difference_type;
-			// typedef T*							pointer;
-			// typedef T&							reference;
-			// typedef Category				iterator_category;
-
-			ListIterator(): _ptr(nullptr) {}
-			virtual ~ListIterator(){}
-			ListIterator(Node<T> *ptr) : _ptr(ptr) {}
-			ListIterator(const ListIterator& copy)
+			ListIterator(void) : _ptr(nullptr) {}
+			virtual ~ListIterator(void) {}
+			ListIterator(Node<T>* ptr) : _ptr(ptr) {}
+			ListIterator(const ListIterator& other)
 			{
-				*this = copy;
+				*this = other;
 			}
-			ListIterator& operator=(const ListIterator& other)
+			ListIterator&	operator=(const ListIterator& other)
 			{
 				_ptr = other._ptr;
 				return (*this);
 			}
-			bool operator==(const ListIterator &other) const
-			{
-				return (_ptr == other._ptr);
-			}
-			bool operator!=(const ListIterator &other) const
-			{
-				return (!(_ptr == other._ptr));
-			}
-			T& operator*(void)
-			{
-				return(_ptr->data);
-			}
-			T* operator->(void)
-			{
-				return(&(_ptr->data));
-			}
-			ListIterator& operator++(void)
+			ListIterator&	operator++(void)
 			{
 				if (_ptr && _ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
-			ListIterator operator++(int)
+			ListIterator	operator++(int)
 			{
-				ListIterator tmp(*this);
+				ListIterator	tmp(*this);
 				operator++();
 				return (tmp);
 			}
-			ListIterator& operator--(void)
+			ListIterator&	operator--(void)
 			{
 				if (_ptr && _ptr->prev)
 					_ptr = _ptr->prev;
 				return (*this);
 			}
-			ListIterator operator--(int)
+			ListIterator	operator--(int)
 			{
-				ListIterator tmp(*this);
+				ListIterator	tmp(*this);
 				operator--();
 				return (tmp);
 			}
-			Node<T> *getPtr(void)
+			bool	operator==(const ListIterator &other) const
+			{
+				return (_ptr == other._ptr);
+			}
+			bool	operator!=(const ListIterator &other) const
+			{
+				return (_ptr != other._ptr);
+			}
+			T&	operator*(void)
+			{
+				return (_ptr->data);
+			}
+			T*	operator->(void)
+			{
+				return (&(_ptr->data));
+			}
+			Node<T>	*getPtr(void)
 			{
 				return (_ptr);
 			}
 	};
 
-	template < class T, class Alloc = std::allocator<T> >
+	template <typename T, typename Alloc = std::allocator<T> >
 	class List
 	{
 		private:
 			typedef typename Alloc::template rebind<Node<T> >::other node_alloc;
-			Node<T> *_head;
-			Node<T>	*_tail;
-			size_t	_size;
+
+			Node<T>*	_head;
+			Node<T>*	_tail;
+			size_t		_size;
 			Alloc		_alloc;
+
+			Node<T>*	dup_node(Node<T>* prev, Node<T>* next, T data)
+			{
+				Node<T>	tmp;
+				Node<T>	*new_node;
+
+				tmp.prev = prev;
+				tmp.next = next;
+				tmp.data = data;
+				new_node = node_alloc(_alloc).allocate(1);
+				node_alloc(_alloc).construct(new_node, tmp);
+				return (new_node);
+			}
 			void		del_node(Node<T>* node)
 			{
 				node_alloc(_alloc).destroy(node);
 				node_alloc(_alloc).deallocate(node, 1);
 				node = nullptr;
-			}
-			Node<T>	*dup_node(Node<T> *prev, Node<T> *next, T data)
-			{
-				Node<T> tmp;
-				Node<T> *node;
-
-				tmp.prev = prev;
-				tmp.next = next;
-				tmp.data = data;
-				node = node_alloc(_alloc).allocate(1);
-				node_alloc(_alloc).construct(node, tmp);
-				return (node);
 			}
 		public:
 			typedef T																value_type;
@@ -118,46 +110,43 @@ namespace ft
 			typedef ListIterator<const T>						const_iterator;
 			typedef ReverseIterator<iterator>				reverse_iterator;
 			typedef ReverseIterator<const_iterator>	const_reverse_iterator;
-			typedef std::ptrdiff_t 									difference_type;
-			typedef size_t 													size_type;
+			typedef std::ptrdiff_t									difference_type;
+			typedef size_t													size_type;
 
-			// explicit List(const allocator_type& alloc = allocator_type());
-			// explicit List(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
-			// template <class InputIterator>
-			// List(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
-
-			explicit List(const allocator_type& alloc = allocator_type()): _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
+			explicit List(const allocator_type& alloc = allocator_type())
+			: _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
 			{
 				_tail = dup_node(nullptr, nullptr, 0);
 				_head = _tail;
-			};
-			explicit List(size_type n, const value_type& val = value_type(),const allocator_type& alloc = allocator_type()): _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
+			}
+			explicit List(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+			: _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
 			{
 				_tail = dup_node(nullptr, nullptr, 0);
 				_head = _tail;
-				//n 개의 컨테이너를 val 값으로 채운다.
 				insert(end(), (size_type)n, val);
-			};
+			}
 			template <class InputIterator>
-			List(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
+			List(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+			: _head(nullptr), _tail(nullptr), _size(0), _alloc(alloc)
 			{
 				_tail = dup_node(nullptr, nullptr, 0);
 				_head = _tail;
-				//input iterator라 처음과 끝사이에 있는 값들이 채워짐
 				insert(end(), first, last);
-			};
-			~List()
+			}
+			List(const List& other)
+			: _head(nullptr), _tail(nullptr), _size(0)
+			{
+				*this = other;
+			}
+			~List(void)
 			{
 				// if (_size)
 				// 	clear();
 				// if (_tail)
 				// 	del_node(_tail);
-			};
-			List(const List& copy): _head(nullptr), _tail(nullptr), _size(0)
-			{
-				*this = copy;
-			};
-			List& operator=(const List& other)
+			}
+			List&	operator=(const List<T>& other)
 			{
 				_alloc = other._alloc;
 				if (_size != 0)
@@ -165,108 +154,99 @@ namespace ft
 				if (!_tail)
 				{
 					_tail = dup_node(nullptr, nullptr, 0);
-					// _tail = new Node<T>();
-					// _tail->next = nullptr;
-					// _tail->prev = nullptr;
-					// _tail->data = 0;
 					_head = _tail;
 				}
-				if (other.size())
+				if (other._size)
 					insert(end(), other.begin(), other.end());
 				return (*this);
 			};
 			/* iterators */
-			iterator begin()
+			iterator				begin(void)
 			{
-				return iterator(_head);
-			};
-			const_iterator begin() const
+				return (iterator(_head));
+			}
+			const_iterator			begin(void) const
 			{
-				return const_iterator((Node<const T>*)_head);
-			};
-			iterator end()
+				return (const_iterator((Node<const T>*)_head));
+			}
+			iterator				end(void)
 			{
-				return iterator(_tail);
-			};
-			const_iterator end() const
+				return (iterator(_tail));
+			}
+			const_iterator			end(void) const
 			{
-				return const_iterator((Node<const T>*)_tail);
-			};
-			// reverse_iterator는 node를 받는게 아니라 iterator를 받아서 iterator를 리턴해줘야한다. it.hpp참고
-			reverse_iterator rbegin()
+				return (const_iterator((Node<const T>*)_tail));
+			}
+			reverse_iterator		rbegin(void)
 			{
-				return reverse_iterator(end());
-			};
-			const_reverse_iterator rbegin() const
+				return (reverse_iterator(end()));
+			}
+			const_reverse_iterator	rbegin() const
 			{
-				return const_reverse_iterator(end());
-			};
-			reverse_iterator rend()
+				return (const_reverse_iterator(end()));
+			}
+			reverse_iterator		rend(void)
 			{
-				return reverse_iterator(begin());
-			};
+				return (reverse_iterator(begin()));
+			}
 			const_reverse_iterator rend() const
 			{
-				return const_reverse_iterator(begin());
-			};
-
+				return (const_reverse_iterator(begin()));
+			}
 			/* capacity */
-			bool empty() const
+			bool	empty(void) const
 			{
 				//size 0 이면 true 아니면 false
 				return (_size == 0);
-			};
-			size_type size() const
+			}
+			size_type	size(void) const
 			{
 				return (_size);
-			};
-			size_type max_size() const
+			}
+			size_type	max_size(void) const
 			{
-				//자료형의 크기(비트)만큼 나눠준면 해당 자료형 max 크기 알 수 있음
 				return (std::numeric_limits<T>::max() / sizeof(Node<T>));
-			};
+			}
 			/* element access */
-			reference front()
+			reference	front(void)
 			{
 				return (_head->data);
-			};
-			const_reference front() const
+			}
+			const_reference	front(void) const
 			{
 				return (_head->data);
-			};
-			reference back()
+			}
+			reference	back(void)
 			{
 				return (_tail->prev->data);
-			};
-			const_reference back() const
+			}
+			const_reference	back(void) const
 			{
 				return (_tail->prev->data);
-			};
+			}
 			/* modifiers */
 			template <class InputIterator>
-  		void assign (InputIterator first, InputIterator last)
+ 			void	assign(InputIterator first, InputIterator last)
 			{
 				if (_size)
 					clear();
 				insert(end(), first, last);
-			};
-			void assign (size_type n, const value_type& val)
+			}
+			void	assign(size_type n, const value_type& val)
 			{
 				if (_size)
 					clear();
 				insert(end(), n, val);
-			};
-
-			void push_front (const value_type& val)
+			}
+			void	push_front(const value_type& val)
 			{
-				Node<T> *new_node;
-				new_node = dup_node(nullptr, _head, val);
-				_head->prev = new_node;
-				_head = new_node;
+				Node<T>	*node;
+				node = dup_node(nullptr, _head, val);
+				_head->prev = node;
+				_head = node;
 				++_size;
-			};
-
-			void pop_front()
+			}
+			void	pop_front()
 			{
 				if (_head == _tail)
 					return ;
@@ -275,77 +255,66 @@ namespace ft
 				_head = _head->next;
 				del_node(tmp);
 				--_size;
-			};
-
-			void push_back (const value_type& val)
+			}
+			void	push_back(const value_type& val)
 			{
 				Node<T> *new_node;
 				new_node = dup_node(_tail->prev, _tail, val);
-				if (_size != 0)
-					_tail->prev->next = new_node;
-				else
+				if (_size == 0)
 					_head = new_node;
+				else
+					_tail->prev->next = new_node;
 				_tail->prev = new_node;
 				++_size;
-			};
-
-			void pop_back()
+			}
+			void	pop_back()
 			{
 				if (_head == _tail)
 					return ;
-				//리스트 탐색해서 마지막 전 노드 찾는다
-				//그 노드 다음을 널 가리키게 함
-				//마지막 노드 제거
-				Node<T> *tmp;
-				tmp = _tail->prev;
-				_tail->prev = tmp->prev;
-				if (tmp == _head)
-					_head = _tail;
+				Node<T> *node_del;
+				node_del = _tail->prev;
+				_tail->prev = node_del->prev;
+				if (node_del->prev)
+					node_del->prev->next = _tail;
 				else
-					tmp->prev->next = _tail;
-				del_node(tmp);
+					_head = _tail;
+				del_node(node_del);
 				--_size;
-			};
-
-			iterator insert (iterator position, const value_type& val)
+			}
+			iterator insert(iterator position, const value_type& val)
 			{
-				insert(position, (size_type)1, val);
+				insert(position, (std::size_t)1, val);
 				return (position.getPtr()->prev);
-			};
-
-    	void insert (iterator position, size_type n, const value_type& val)
+			}
+			void	insert(iterator position, size_type n, const value_type& val)
 			{
-				//n개만큼 노드 삽입하는데 그것의 값들은 val
 				size_type i = 0;
-				if (position == begin()) //|| position.getPtr() == nullptr)
-				{
-					push_front(val);
-					++i;
-				}
 				if (_size == 0)
 				{
 					push_back(val);
 					++i;
 				}
-				Node<T> *tmp;
-				tmp = position.getPtr()->prev;
-				while (i < n)
+				if (position == begin())
 				{
-					Node<T> *new_node;
-					new_node = dup_node(tmp, tmp->next, val);
-					tmp->next = new_node;
-					new_node->next->prev = new_node;
-					++_size;
-					tmp = new_node;
+					push_front(val);
 					++i;
 				}
-			};
-
+				Node<T> *pos;
+				pos = position.getPtr();
+				for (;i < n;++i)
+				{
+					Node<T> *new_node;
+					new_node = dup_node(pos->prev, pos, val);
+					pos->prev->next = new_node;
+					pos->prev = new_node;
+					pos = new_node->next;
+					++_size;
+				}
+			}
 			template <class InputIterator>
-    	void insert (iterator position, InputIterator first, InputIterator last)
+			void insert(iterator position, InputIterator first, InputIterator last)
 			{
-				InputIterator it;
-				it = first;
+				InputIterator it = first;
 				if (position == begin())
 				{
 					push_front(*it);
@@ -356,23 +325,20 @@ namespace ft
 					push_back(*it);
 					++it;
 				}
-				Node<T> *tmp;
-				tmp = position.getPtr()->prev;
-				while (it != last)
+				Node<T> *pos;
+				pos = position.getPtr();
+				for (;it != last;++it)
 				{
 					Node<T> *new_node;
-					new_node = dup_node(tmp, tmp->next, *it);
-					tmp->next = new_node;
-					new_node->next->prev = new_node;
+					new_node = dup_node(pos->prev, pos, *it);
+					pos->prev->next = new_node;
+					pos->prev = new_node;
+					pos = new_node->next;
 					++_size;
-					tmp = new_node;
-					++it;
 				}
-			};
-
-			iterator erase (iterator position)
+			}
+			iterator erase(iterator position)
 			{
-				//position에 있는 걸 지우고 그 다음꺼를 return?
 				if (position == begin())
 				{
 					pop_front();
@@ -380,74 +346,117 @@ namespace ft
 				}
 				if (position == end())
 					return (end());
-				Node<T> *tmp = position.getPtr();
-				tmp->prev->next = tmp->next;
-				tmp->next->prev = tmp->prev;
-				del_node(tmp);
+				Node<T> *pos, *ret;
+				pos = position.getPtr();
+				ret = pos->next;
+				ret->prev = pos->prev;
+				pos->prev->next = ret;
+				del_node(pos);
 				--_size;
-				return (tmp->next);
-			};
-
-			iterator erase (iterator first, iterator last)
+				return (ret);
+			}
+			iterator erase(iterator first, iterator last)
 			{
-
-				Node<T> *tmp = first.getPtr();
+				Node<T>	*pos = first.getPtr();
 				iterator it = first;
+
 				while (it != last)
 				{
-					if (tmp == _head)
-						_head = tmp->next;
+					if (pos == _head)
+						_head = pos->next;
 					else
-						tmp->prev->next = tmp->next;
-					tmp->next->prev = tmp->prev;
-					del_node(tmp);
+						pos->prev->next = pos->next;
+					pos->next->prev = pos->prev;
+					del_node(pos);
+					pos = it.getPtr();
 					--_size;
-					tmp = it.getPtr();
 					++it;
 				}
-				return (tmp);
-
-			};
-
-			void swap (List& x)
+				return (pos);
+			}
+			void swap(List& x)
 			{
 				std::swap(_head, x._head);
 				std::swap(_tail, x._tail);
 				std::swap(_size, x._size);
-			};
-
-			void resize (size_type n, value_type val = value_type())
+			}
+			void resize(size_type n, value_type val = value_type())
 			{
-				while(n < _size)
+				while (_size > n)
 					pop_back();
-				while(_size < n)
+				while (_size < n)
 					push_back(val);
-			};
-
+			}
 			void clear()
 			{
 				erase(begin(), end());
-			};
-
-			/* operations */
-			void splice (iterator position, List& x)
+			}
+			void splice(iterator position, List& x)
 			{
-				insert(position, x.begin(), x.end());
-				x.clear();
-			};
+				Node<T>*	pos = position.getPtr();
 
-			void splice (iterator position, List& x, iterator i)
+				if (position == begin())
+					_head = x._head;
+				else
+				{
+					x._head->prev = pos->prev;
+					pos->prev->next = x._head;
+				}
+				pos->prev = x._tail->prev;
+				x._tail->prev->next = pos;
+				_size += x._size;
+
+				x._tail->prev = nullptr;
+				x._head = x._tail;
+				x._size = 0;
+			}
+			void splice(iterator position, List& x, iterator i)
 			{
-				insert(position, *i);
-				x.erase(i);
-			};
+				Node<T>*	pos = position.getPtr();
+				Node<T>*	tmp = i.getPtr();
 
-			void splice (iterator position, List& x, iterator first, iterator last)
+				if (i != x.begin())
+					tmp->prev->next = tmp->next;
+				else
+					x._head = tmp->next;
+				tmp->next->prev = tmp->prev;
+				--x._size;
+
+				if (position != begin())
+					pos->prev->next = tmp;
+				else
+					_head = tmp;
+				tmp->prev = pos->prev;
+				pos->prev = tmp;
+				tmp->next = pos;
+				++_size;
+			}
+			void splice(iterator position, List& x, iterator first, iterator last)
 			{
-				insert(position, first, last);
-				x.erase(first, last);
-			};
+				Node<T>*	pos = position.getPtr();
+				Node<T>*	start = first.getPtr();
+				Node<T>*	end = last.getPtr()->prev;
 
+				if (first != x.begin())
+					start->prev->next = end->next;
+				else
+					x._head = end->next;
+				end->next->prev = start->prev;
+
+				if (position != begin())
+					pos->prev->next = start;
+				else
+					_head = start;
+				start->prev = pos->prev;
+				pos->prev = end;
+				end->next = pos;
+
+				for (iterator it = first; it != last; ++it)
+				{
+					_size += 1;
+					x._size -= 1;
+				}
+			}
 			void remove (const value_type& val)
 			{
 				iterator it = begin();
@@ -458,10 +467,9 @@ namespace ft
 					else
 						++it;
 				}
-			};
-
+			}
 			template <class Predicate>
-  		void remove_if (Predicate pred)
+			void remove_if (Predicate pred)
 			{
 				iterator it = begin();
 				while (it != end())
@@ -471,8 +479,7 @@ namespace ft
 					else
 						++it;
 				}
-			};
-
+			}
 			void unique()
 			{
 				for(iterator first = begin(); first != end(); ++first)
@@ -485,8 +492,7 @@ namespace ft
 							erase(next);
 					}
 				}
-			};
-
+			}
 			template <class BinaryPredicate>
 			void unique (BinaryPredicate binary_pred)
 			{
@@ -500,8 +506,7 @@ namespace ft
 							erase(next);
 					}
 				}
-			};
-
+			}
 			void merge (List& x)
 			{
 				if (&x == this)
@@ -510,19 +515,17 @@ namespace ft
 					push_back(*it);
 				sort();
 				x.clear();
-			};
-
+			}
 			template <class Compare>
-  		void merge (List& x, Compare comp)
+ 			void merge (List& x, Compare comp)
 			{
-				if (&x == this)
+			if (&x == this)
 					return ;
 				for (iterator it = x.begin(); it != x.end(); it++)
 					push_back(*it);
 				sort(comp);
 				x.clear();
-			};
-
+			}
 			void sort()
 			{
 				for(iterator first = begin(); first != end(); ++first)
@@ -535,8 +538,7 @@ namespace ft
 							std::swap(*first, *next);
 					}
 				}
-			};
-
+			}
 			template <class Compare>
 			void sort (Compare comp)
 			{
@@ -550,84 +552,81 @@ namespace ft
 							std::swap(*first, *next);
 					}
 				}
-			};
-
+			}
 			void reverse()
 			{
-				iterator first = begin();
-				iterator last = end();
-				for (size_type i = 0; i < (_size / 2); ++i)
+				iterator	first = begin();
+				iterator	last = end();
+				--last;
+
+				for (unsigned int i = 0; i < _size / 2; ++i)
 				{
-					std::swap(first, last);
+					std::swap(*first, *last);
 					++first;
 					--last;
 				}
-			};
-	};
+			}
+    };
 
-	/**/
-	/* Non-member function overloads */
-	/**/
 	template <class T, class Alloc>
 	bool operator== (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
-		//사이즈로 먼저 비교하고 val 비교
 		if (lhs.size() != rhs.size())
 			return (false);
-		typename List<T, Alloc>::const_iterator	it_r = rhs.begin();
-		typename List<T, Alloc>::const_iterator	it_l = lhs.begin();
-		for (; (it_l != lhs.end()) && (it_r != rhs.end()); ++it_l, ++it_r)
+
+		typename List<T, Alloc>::const_iterator	l_it = lhs.begin();
+		typename List<T, Alloc>::const_iterator	r_it = rhs.begin();
+		for (unsigned int i = 0; i < lhs.size(); ++i)
 		{
-			if (*it_l != *it_r)
+			if (*l_it != *r_it)
 				return (false);
+			++l_it;
+			++r_it;
 		}
 		return (true);
-	};
-
+	}
 	template <class T, class Alloc>
 	bool operator!= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
 		return (!(lhs == rhs));
-	};
-
+	}
 	template <class T, class Alloc>
 	bool operator<  (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
-		typename List<T, Alloc>::const_iterator	it_r = rhs.begin();
-		typename List<T, Alloc>::const_iterator	it_l = lhs.begin();
-		for (; (it_l != lhs.end()) && (it_r != rhs.end()); ++it_l, ++it_r)
+		typename List<T, Alloc>::const_iterator	l_it = lhs.begin();
+		typename List<T, Alloc>::const_iterator	r_it = rhs.begin();
+		for (; (l_it != lhs.end()) && (r_it != rhs.end()); ++l_it, ++r_it)
 		{
-			if (*it_l < *it_r)
+			if (*l_it < *r_it)
 				return (true);
-			if (*it_r < *it_l)
+			if (*r_it < *l_it)
 				return (false);
 		}
-		return (it_l == lhs.end() && it_r != rhs.end());
-	};
-
+		return (l_it == lhs.end() && r_it != rhs.end());
+	}
 	template <class T, class Alloc>
 	bool operator<= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
-		return (!(lhs > rhs));
-	};
-
+		return (!(rhs < lhs));
+	}
 	template <class T, class Alloc>
-	bool operator>  (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
+ 	bool operator>  (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
 		return (rhs < lhs);
-	};
-
+	}
 	template <class T, class Alloc>
 	bool operator>= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs)
 	{
 		return (!(lhs < rhs));
-	};
-
+	}
 	template <class T, class Alloc>
 	void swap (List<T,Alloc>& x, List<T,Alloc>& y)
 	{
 		x.swap(y);
-	};
-}
+	}
+};
+
+
+
 
 #endif

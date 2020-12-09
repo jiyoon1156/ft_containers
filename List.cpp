@@ -1,4 +1,4 @@
-#include "List_backup.hpp"
+#include "List_new.hpp"
 #include <iostream>
 #include <math.h>
 #include <list>
@@ -41,25 +41,28 @@ int main()
 		my_list2.push_back(i);
 
 	it = my_list1.begin();
-	++it;
+	++it;// it points now to number 2
 
-	my_list1.insert(it, my_list2.begin(), my_list2.end());
-	// my_list1.insert(it, 10);
-	// my_list1.insert(it, 20);
-	// my_list1.insert(it, 30);
+	// "it" still points to number 2
+	my_list1.insert(it, 2, (std::size_t)42); // 1 42 42 2 3 4 5
+	// "it" still points to number 2
+	my_list1.insert(it, my_list2.begin(), my_list2.end()); // 1 42 42 6 7 8 9 10 2 3 4 5
 	for (it=my_list1.begin(); it!=my_list1.end(); ++it)
     std::cout << ' ' << *it;
   std::cout << '\n';
 
 	std::cout << "======== erase ===========" << std::endl;
 
-	// it = my_list1.begin();
-	// ++it;
-	// my_list1.erase(it);
-	// ++it;
-	// my_list1.erase(it);
-	// --it;
-	// my_list1.erase(it);
+	it = my_list1.begin();// 1 42 42 6 7 8 9 10 2 3 4 5
+	++it;
+	// "it" points to number first 42
+	my_list1.erase(it); // 1 42 6 7 8 9 10 2 3 4 5
+	++it;
+	// "it" points to number second 42
+	my_list1.erase(it); //  1 6 7 8 9 10 2 3 4 5
+	--it;
+	// "it" points to number 1
+	my_list1.erase(it); //  6 7 8 9 10 2 3 4 5
 
 	ft::List<int>::iterator it2;
 	it2 = it = my_list1.begin();
@@ -77,19 +80,19 @@ int main()
 	// std::cout << "size : " << my_list1.size() << std::endl;
 	// std::cout << "empty? : " << std::boolalpha << my_list1.empty() << std::endl;
 
-	std::cout << "========= push_back & push_front ==========" << std::endl;
+	// std::cout << "========= push_back & push_front ==========" << std::endl;
 
-	my_list1.clear();
-	for (int i = 1; i <= 5; ++i)
-		my_list1.push_back(i);
+	// my_list1.clear();
+	// for (int i = 1; i <= 5; ++i)
+	// 	my_list1.push_back(i);
 
-	my_list1.push_front(0);
-	for (it=my_list1.begin(); it!=my_list1.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
-	std::cout << "size : " << my_list1.size() << std::endl;
-	std::cout << "max_size : " << my_list1.max_size() << std::endl;
-	std::cout << "empty? : " << std::boolalpha << my_list1.empty() << std::endl;
+	// my_list1.push_front(0);
+	// for (it=my_list1.begin(); it!=my_list1.end(); ++it)
+  //   std::cout << ' ' << *it;
+  // std::cout << '\n';
+	// std::cout << "size : " << my_list1.size() << std::endl;
+	// std::cout << "max_size : " << my_list1.max_size() << std::endl;
+	// std::cout << "empty? : " << std::boolalpha << my_list1.empty() << std::endl;
 
 	// std::cout << "========= List constructor ==========" << std::endl;
 
@@ -157,45 +160,45 @@ int main()
 	// 	my_list1.pop_front();
 	// }
 
-	std::cout << "========pop_back===========" << std::endl;
+	// std::cout << "========pop_back===========" << std::endl;
 
-	while (!my_list2.empty())
-	{
-		std::cout << my_list2.back() << std::endl;
-		my_list2.pop_back();
-	}
+	// while (!my_list2.empty())
+	// {
+	// 	std::cout << my_list2.back() << std::endl;
+	// 	my_list2.pop_back();
+	// }
 
-	// std::cout << "========= assign ==========" << std::endl;
+	// // std::cout << "========= assign ==========" << std::endl;
 
-	// ft::List<int> first;
-	// ft::List<int> second;
-	// first.assign((unsigned int)7, 10);
-	// second.assign(first.begin(), first.end());
-	// int myints[] = {1776, 7, 4};
-  // 	first.assign(myints, myints + 3);
+	// // ft::List<int> first;
+	// // ft::List<int> second;
+	// // first.assign((unsigned int)7, 10);
+	// // second.assign(first.begin(), first.end());
+	// // int myints[] = {1776, 7, 4};
+  // // 	first.assign(myints, myints + 3);
 
-	// std::cout << "Size of first: " << first.size() << std::endl;
-	// std::cout << "Size of second: " << second.size() << std::endl;
+	// // std::cout << "Size of first: " << first.size() << std::endl;
+	// // std::cout << "Size of second: " << second.size() << std::endl;
 
-	std::cout << "========= swap ==========" << std::endl;
+	// std::cout << "========= swap ==========" << std::endl;
 
-	ft::List<int> a ((unsigned int)3,100);   // three ints with a value of 100
-	ft::List<int> b ((unsigned int)5,200);  // five ints with a value of 200
+	// ft::List<int> a ((unsigned int)3,100);   // three ints with a value of 100
+	// ft::List<int> b ((unsigned int)5,200);  // five ints with a value of 200
 
 
-	a.swap(b);
+	// a.swap(b);
 
-	std::cout << "first contains:";
+	// std::cout << "first contains:";
 
-	for (ft::List<int>::iterator it=a.begin(); it!=a.end(); it++)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	// for (ft::List<int>::iterator it=a.begin(); it!=a.end(); it++)
+	// 	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	std::cout << "by reverse iterator:";
+	// std::cout << "by reverse iterator:";
 
-	for (ft::List<int>::reverse_iterator it=a.rbegin(); it!=a.rend(); it++)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	// for (ft::List<int>::reverse_iterator it=a.rbegin(); it!=a.rend(); it++)
+	// 	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
 	// std::cout << "second contains:";
 	// for (ft::List<int>::iterator it=b.begin(); it!=b.end(); it++)
@@ -209,88 +212,88 @@ int main()
 	// std::cout << '\n';
 
 
-	std::cout << "========= resize ==========" << std::endl;
+	// std::cout << "========= resize ==========" << std::endl;
 
-	ft::List<int> my_list5;
-	for (int i = 1; i < 10; ++i)
-		my_list5.push_back(i);
+	// ft::List<int> my_list5;
+	// for (int i = 1; i < 10; ++i)
+	// 	my_list5.push_back(i);
 
-	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-    	std::cout << ' ' << *it;
-	std::cout << '\n';
+	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+  //   	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	my_list5.resize(5);
+	// my_list5.resize(5);
 
-	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-    	std::cout << ' ' << *it;
-	std::cout << '\n';
+	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+  //   	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	my_list5.resize(8,100);
+	// my_list5.resize(8,100);
 
-	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-    	std::cout << ' ' << *it;
-	std::cout << '\n';
+	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+  //   	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
 
-	my_list5.resize(12);
-	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-    	std::cout << ' ' << *it;
-	std::cout << '\n';
+	// my_list5.resize(12);
+	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+  //   	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	std::cout << "========= clear ==========" << std::endl;
-	my_list5.clear();
-	my_list5.push_back(100);
-	for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
-    	std::cout << ' ' << *it;
-	std::cout << '\n';
-	std::cout << "========= splice ==========" << std::endl;
+	// std::cout << "========= clear ==========" << std::endl;
+	// my_list5.clear();
+	// my_list5.push_back(100);
+	// for (ft::List<int>::iterator it=my_list5.begin(); it!=my_list5.end(); ++it)
+  //   	std::cout << ' ' << *it;
+	// std::cout << '\n';
+	// std::cout << "========= splice ==========" << std::endl;
 
-	ft::List<int> mylist1, mylist2;
-	ft::List<int>::iterator it_sp;
+	// ft::List<int> mylist1, mylist2;
+	// ft::List<int>::iterator it_sp;
 
-	// set some initial values:
-	for (int i=1; i<=4; ++i)
-		mylist1.push_back(i);      // mylist1: 1 2 3 4
+	// // set some initial values:
+	// for (int i=1; i<=4; ++i)
+	// 	mylist1.push_back(i);      // mylist1: 1 2 3 4
 
-	for (int i=1; i<=3; ++i)
-		mylist2.push_back(i*10);   // mylist2: 10 20 30
+	// for (int i=1; i<=3; ++i)
+	// 	mylist2.push_back(i*10);   // mylist2: 10 20 30
 
-	it_sp = mylist1.begin();
-	++it_sp;                         // points to 2
+	// it_sp = mylist1.begin();
+	// ++it_sp;                         // points to 2
 
-	mylist1.splice (it_sp, mylist2); // mylist1: 1 10 20 30 2 3 4
-									// mylist2 (empty)
-									// "it" still points to 2 (the 5th element)
-	std::cout << "mylist1 contains:";
-	for (ft::List<int>::iterator iter = mylist1.begin(); iter != mylist1.end(); ++iter)
-		std::cout << ' ' << *iter;
-	std::cout << '\n';
+	// mylist1.splice (it_sp, mylist2); // mylist1: 1 10 20 30 2 3 4
+	// 								// mylist2 (empty)
+	// 								// "it" still points to 2 (the 5th element)
+	// std::cout << "mylist1 contains:";
+	// for (ft::List<int>::iterator iter = mylist1.begin(); iter != mylist1.end(); ++iter)
+	// 	std::cout << ' ' << *iter;
+	// std::cout << '\n';
 
-	std::cout << *it_sp << std::endl;
+	// std::cout << *it_sp << std::endl;
 
-	mylist2.splice(mylist2.begin(), mylist1, it_sp);
-									// mylist1: 1 10 20 30 3 4
-									// mylist2: 2
+	// mylist2.splice(mylist2.begin(), mylist1, it_sp);
+	// 								// mylist1: 1 10 20 30 3 4
+	// 								// mylist2: 2
 
-	std::cout << "mylist1 contains:";
-	for (ft::List<int>::iterator iter = mylist1.begin(); iter != mylist1.end(); ++iter)
-		std::cout << ' ' << *iter;
+	// std::cout << "mylist1 contains:";
+	// for (ft::List<int>::iterator iter = mylist1.begin(); iter != mylist1.end(); ++iter)
+	// 	std::cout << ' ' << *iter;
 
-	std::cout << '\n';
-	std::cout << "mylist2 contains:";
-	for (ft::List<int>::iterator iter = mylist2.begin(); iter != mylist2.end(); ++iter)
-		std::cout << ' ' << *iter;
-	std::cout << '\n';
+	// std::cout << '\n';
+	// std::cout << "mylist2 contains:";
+	// for (ft::List<int>::iterator iter = mylist2.begin(); iter != mylist2.end(); ++iter)
+	// 	std::cout << ' ' << *iter;
+	// std::cout << '\n';
 
-	it = mylist1.begin();
-	for (int i = 0; i < 3; ++i)
-		++it; //it is pointing 30.
-	mylist1.splice(mylist1.begin(), mylist1, it, mylist1.end());
-									// mylist1: 30 3 4 1 10 20
-	std::cout << "mylist1 contains:";
-	for (ft::List<int>::iterator iter = mylist1.begin(); iter != mylist1.end(); ++iter)
-		std::cout << ' ' << *iter;
-	std::cout << '\n';
+	// it = mylist1.begin();
+	// for (int i = 0; i < 3; ++i)
+	// 	++it; //it is pointing 30.
+	// mylist1.splice(mylist1.begin(), mylist1, it, mylist1.end());
+	// 								// mylist1: 30 3 4 1 10 20
+	// std::cout << "mylist1 contains:";
+	// for (ft::List<int>::iterator iter = mylist1.begin(); iter != mylist1.end(); ++iter)
+	// 	std::cout << ' ' << *iter;
+	// std::cout << '\n';
 
 	// std::cout << "========= remove ==========" << std::endl;
 
@@ -324,158 +327,158 @@ int main()
 	// 	std::cout << ' ' << *it;
 	// std::cout << '\n';
 
-	std::cout << "========= sort & unique ==========" << std::endl;
+	// std::cout << "========= sort & unique ==========" << std::endl;
 
-	double mydoubles[]={ 12.15,  2.72, 73.0,  12.77,  3.14,
-                       12.77, 73.35, 72.25, 15.3,  72.25 };
-	ft::List<double> mylist5 (mydoubles,mydoubles+10);
+	// double mydoubles[]={ 12.15,  2.72, 73.0,  12.77,  3.14,
+  //                      12.77, 73.35, 72.25, 15.3,  72.25 };
+	// ft::List<double> mylist5 (mydoubles,mydoubles+10);
 
-	std::cout << "mylist contains:";
-	for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	// std::cout << "mylist contains:";
+	// for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
+	// 	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	mylist5.sort();             //  2.72,  3.14, 12.15, 12.77, 12.77,
-								// 15.3,  72.25, 72.25, 73.0,  73.35
+	// mylist5.sort();             //  2.72,  3.14, 12.15, 12.77, 12.77,
+	// 							// 15.3,  72.25, 72.25, 73.0,  73.35
 
-	std::cout << "SORTED mylist contains:";
-	for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	// std::cout << "SORTED mylist contains:";
+	// for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
+	// 	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	std::cout << "SORTED mylist in reverse:";
-	for (ft::List<double>::reverse_iterator it=mylist5.rbegin(); it!=mylist5.rend(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	// std::cout << "SORTED mylist in reverse:";
+	// for (ft::List<double>::reverse_iterator it=mylist5.rbegin(); it!=mylist5.rend(); ++it)
+	// 	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	mylist5.unique();           //  2.72,  3.14, 12.15, 12.77
-								// 15.3,  72.25, 73.0,  73.35
-		std::cout << "UNIQUE mylist contains:";
-	for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+	// mylist5.unique();           //  2.72,  3.14, 12.15, 12.77
+	// 							// 15.3,  72.25, 73.0,  73.35
+	// 	std::cout << "UNIQUE mylist contains:";
+	// for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
+	// 	std::cout << ' ' << *it;
+	// std::cout << '\n';
 
-	mylist5.unique (same_integral_part);  //  2.72,  3.14, 12.15
+	// mylist5.unique (same_integral_part);  //  2.72,  3.14, 12.15
 										// 15.3,  72.25, 73.0
 
-	std::cout << "mylist contains:";
-	for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "mylist contains:";
+// 	for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	mylist5.unique (is_near());           //  2.72, 12.15, 72.25
+// 	mylist5.unique (is_near());           //  2.72, 12.15, 72.25
 
-	std::cout << "mylist contains:";
-	for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "mylist contains:";
+// 	for (ft::List<double>::iterator it=mylist5.begin(); it!=mylist5.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	std::cout << "SORTED mylist in reverse:";
-	for (ft::List<double>::reverse_iterator it=mylist5.rbegin(); it!=mylist5.rend(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "SORTED mylist in reverse:";
+// 	for (ft::List<double>::reverse_iterator it=mylist5.rbegin(); it!=mylist5.rend(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	std::cout << "========= merge ==========" << std::endl;
+// 	std::cout << "========= merge ==========" << std::endl;
 
-	ft::List<double> j;
-	ft::List<double> k;
+// 	ft::List<double> j;
+// 	ft::List<double> k;
 
-	j.push_back (3.1);
-	j.push_back (2.2);
-	j.push_back (2.9);
+// 	j.push_back (3.1);
+// 	j.push_back (2.2);
+// 	j.push_back (2.9);
 
-	k.push_back (3.7);
-	k.push_back (7.1);
-	k.push_back (1.4);
+// 	k.push_back (3.7);
+// 	k.push_back (7.1);
+// 	k.push_back (1.4);
 
-	j.sort();
-	std::cout << "first contains:";
-	for (ft::List<double>::iterator it = j.begin(); it != j.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
-	k.sort();
-	std::cout << "first contains:";
-	for (ft::List<double>::iterator it = k.begin(); it != k.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	j.sort();
+// 	std::cout << "first contains:";
+// 	for (ft::List<double>::iterator it = j.begin(); it != j.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
+// 	k.sort();
+// 	std::cout << "first contains:";
+// 	for (ft::List<double>::iterator it = k.begin(); it != k.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	j.merge(k);
+// 	j.merge(k);
 
-	std::cout << "second contains:";
-	for (ft::List<double>::iterator it = j.begin(); it != j.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "second contains:";
+// 	for (ft::List<double>::iterator it = j.begin(); it != j.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	j.push_back(2.1);
-	k.merge(j, mycomparison);
-	std::cout << "first contains:";
-	for (ft::List<double>::iterator it = k.begin(); it != k.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	j.push_back(2.1);
+// 	k.merge(j, mycomparison);
+// 	std::cout << "first contains:";
+// 	for (ft::List<double>::iterator it = k.begin(); it != k.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-std::cout << "========= reverse ==========" << std::endl;
+// std::cout << "========= reverse ==========" << std::endl;
 
-	ft::List<int> mylist6;
-	for (int i=1; i<10; ++i)
-		mylist6.push_back(i);
+// 	ft::List<int> mylist6;
+// 	for (int i=1; i<10; ++i)
+// 		mylist6.push_back(i);
 
-	mylist6.reverse();
+// 	mylist6.reverse();
 
-	std::cout << "mylist contains:";
-	for (ft::List<int>::iterator it = mylist6.begin(); it != mylist6.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
-	std::cout << "Reverse to reverse:";
-	for (ft::List<int>::reverse_iterator it = mylist6.rbegin(); it != mylist6.rend(); ++it)
-		std::cout << ' ' << *it;
+// 	std::cout << "mylist contains:";
+// 	for (ft::List<int>::iterator it = mylist6.begin(); it != mylist6.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
+// 	std::cout << "Reverse to reverse:";
+// 	for (ft::List<int>::reverse_iterator it = mylist6.rbegin(); it != mylist6.rend(); ++it)
+// 		std::cout << ' ' << *it;
 
-	std::cout << "\n==========non_member function overloads===========" << std::endl;
-	std::cout << "==========relational operators===========" << std::endl;
+// 	std::cout << "\n==========non_member function overloads===========" << std::endl;
+// 	std::cout << "==========relational operators===========" << std::endl;
 
-	ft::List<int> p, q, r;
-	for (int i = 1; i < 4; ++i)
-		p.push_back(i*10);		// 10 20 30
-	for (int i = 1; i < 4; ++i)
-		q.push_back(i*10);		// 10 20 30
-	for (int i = 3; i > 0; --i)
-		r.push_back(i*10);		// 30 20 10
-	if (p == q) std::cout << "p and q are equal\n";
-	if (q != r) std::cout << "q and r are not equal\n";
+// 	ft::List<int> p, q, r;
+// 	for (int i = 1; i < 4; ++i)
+// 		p.push_back(i*10);		// 10 20 30
+// 	for (int i = 1; i < 4; ++i)
+// 		q.push_back(i*10);		// 10 20 30
+// 	for (int i = 3; i > 0; --i)
+// 		r.push_back(i*10);		// 30 20 10
+// 	if (p == q) std::cout << "p and q are equal\n";
+// 	if (q != r) std::cout << "q and r are not equal\n";
 
-	if (q < r) std::cout << "q is less than r\n";
-	if (r > q) std::cout << "r is greater than q\n";
+// 	if (q < r) std::cout << "q is less than r\n";
+// 	if (r > q) std::cout << "r is greater than q\n";
 
-	if (p <= q) std::cout << "p is less than or equal to q\n";
-	if (p >= q) std::cout << "p is greater than or equal to q\n";
+// 	if (p <= q) std::cout << "p is less than or equal to q\n";
+// 	if (p >= q) std::cout << "p is greater than or equal to q\n";
 
-	std::cout << "==========relational operators===========" << std::endl;
+// 	std::cout << "==========relational operators===========" << std::endl;
 
-	ft::List<int> foo ((unsigned int)3,100);   // three ints with a value of 100
-	ft::List<int> bar ((unsigned int)5,200);   // five ints with a value of 200
+// 	ft::List<int> foo ((unsigned int)3,100);   // three ints with a value of 100
+// 	ft::List<int> bar ((unsigned int)5,200);   // five ints with a value of 200
 
-	foo.swap(bar);
+// 	foo.swap(bar);
 
-	std::cout << "foo contains:";
-	for (ft::List<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "foo contains:";
+// 	for (ft::List<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	std::cout << "by reverse iterator";
-	for (ft::List<int>::reverse_iterator it = foo.rbegin(); it!=foo.rend(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "by reverse iterator";
+// 	for (ft::List<int>::reverse_iterator it = foo.rbegin(); it!=foo.rend(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	std::cout << "bar contains:";
-	for (ft::List<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "bar contains:";
+// 	for (ft::List<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	std::cout << "by reverse iterator";
-	for (ft::List<int>::reverse_iterator it = bar.rbegin(); it!=bar.rend(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+// 	std::cout << "by reverse iterator";
+// 	for (ft::List<int>::reverse_iterator it = bar.rbegin(); it!=bar.rend(); ++it)
+// 		std::cout << ' ' << *it;
+// 	std::cout << '\n';
 
-	std::cout << "=====================" << std::endl;
+// 	std::cout << "=====================" << std::endl;
 
 	return (0);
 }
