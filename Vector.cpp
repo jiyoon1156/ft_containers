@@ -22,6 +22,17 @@ void iter_print(ft::Vector<T> &vector)
 
 int main (void)
 {
+	std::cout << "======insert==========" << std::endl;
+	ft::Vector<int> tmpmyvector(3, (std::size_t)100);
+	ft::Vector<int>::iterator tmpit;
+
+	tmpit = tmpmyvector.begin();
+	tmpmyvector.insert(tmpit, (std::size_t)200);
+	tmpmyvector.insert (tmpit, 2, (std::size_t)300);
+	std::cout << "The contents of myvector are:";
+	for (ft::Vector<int>::iterator it = tmpmyvector.begin(); it != tmpmyvector.end(); ++it)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
 	std::cout << "======constructor==========" << std::endl;
 	// constructors used in the same order as described above:
 
@@ -35,6 +46,9 @@ int main (void)
 	iter_print(second);
 	ft::Vector<int> third(second.begin(),second.end());  // iterating through second
 	iter_print(third);
+	// ft::Vector<int> fourth(third);                       // a copy of third
+	// iter_print(fourth);
+	// the iterator constructor can also be used to construct from arrays:
 	int myints[] = {16,2,77,29};
 	ft::Vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
 
