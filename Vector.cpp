@@ -22,17 +22,6 @@ void iter_print(ft::Vector<T> &vector)
 
 int main (void)
 {
-	// std::cout << "======insert==========" << std::endl;
-	// ft::Vector<int> myvector(3, (std::size_t)100);
-	// ft::Vector<int>::iterator it;
-
-	// it = myvector.begin();
-	// myvector.insert(it, (std::size_t)200);
-	// myvector.insert (it, 2, (std::size_t)300);
-	// std::cout << "The contents of myvector are:";
-	// for (ft::Vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
-	// 	std::cout << ' ' << *it;
-	// std::cout << '\n';
 	std::cout << "======constructor==========" << std::endl;
 	// constructors used in the same order as described above:
 
@@ -46,9 +35,6 @@ int main (void)
 	iter_print(second);
 	ft::Vector<int> third(second.begin(),second.end());  // iterating through second
 	iter_print(third);
-	// ft::Vector<int> fourth(third);                       // a copy of third
-	// iter_print(fourth);
-	// the iterator constructor can also be used to construct from arrays:
 	int myints[] = {16,2,77,29};
 	ft::Vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
 
@@ -180,15 +166,15 @@ int main (void)
 	vec.erase(vec.begin(), vec.begin() + 3);
 	iter_print(vec);
 
-	// std::cout << "========swap=========" << std::endl;
+	std::cout << "========swap=========" << std::endl;
 
-	// ft::Vector<int> a((unsigned int)3, 100);
-	// std::cout << "a: ";
-	// iter_print(a);
-	// ft::Vector<int> b((unsigned int)5, 200);
-	// a.swap(b);
-	// std::cout << "a: ";
-	// iter_print(a);
+	ft::Vector<int> a((unsigned int)3, 100);
+	std::cout << "a: ";
+	iter_print(a);
+	ft::Vector<int> b((unsigned int)5, 200);
+	a.swap(b);
+	std::cout << "a: ";
+	iter_print(a);
 
 	std::cout << "========non member function overload=========" << std::endl;
 

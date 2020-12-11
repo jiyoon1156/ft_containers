@@ -1,6 +1,5 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
-#include <iterator>
 #include "Iterator.hpp"
 #include "Node.hpp"
 
@@ -393,9 +392,9 @@ namespace ft
 			};
 			void swap (Vector& x)
 			{
-				Vector tmp(x);
-				x = *this;
-				*this = tmp;
+				std::swap(_ptr, x._ptr);
+				std::swap(_capa, x._capa);
+				std::swap(_size, x._size);
 			};
 			void clear()
 			{
